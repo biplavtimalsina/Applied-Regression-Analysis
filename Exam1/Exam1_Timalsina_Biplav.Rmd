@@ -1,0 +1,507 @@
+---
+title: "Exam 1"
+author: "Biplav Timalsina"
+date: "April 01, 2018"
+output: "pdf_document"
+---
+  
+  
+  
+  \vspace{40pt}
+
+
+![](F:/unr/shift1.png)![](F:/unr/shift1.png)![](F:/unr/logo1.png)
+
+
+```{r setup, include=FALSE}
+library(knitr)
+opts_chunk$set(echo = TRUE)
+
+```
+
+
+\vspace{175pt}
+
+
+
+# \hspace{90pt} STAT 757 Applied Regression Analysis
+
+---
+  
+  \vspace{132pt}
+\vspace{10pt}
+\vspace{10pt}
+
+\vspace{10pt}
+\vspace{10pt}
+\vspace{5pt}
+
+
+## Take-home Exam Procedures
+
+You may use your notes, textbook, and R while taking this exam. You are free to look online for definitions, however searching directly for answers to the given questions will be treated as cheating and dealt with according to UNR's policies regarding Academic Dishonesty. You are encouraged to ask questions to the instructor during the exam (but only hints will be given!) Partial credit WILL be awarded where sufficient details have been provided. This exam must be completed **individually** (you may not discuss any aspect of the exam with your classmates).
+
+Modify this `.Rmd` file to produce a **report** that addresses the parts indicated in Exercise 3.4.3 in sheather2009 for `AdRevenue.csv` dataset. You can find some helpful code here: [http://www.stat.
+tamu.edu/~sheather/book/docs/rcode/Chapter10.R](http://www.stat.tamu.edu/~sheather/book/docs/rcode/Chapter3NewMarch2011.R). Please email **both** your .Rmd (or roxygen .R) and one of the following either .HTML, .PDF, or .DOCX using the format `SURNAME-FIRSTNAME-Exam1.Rmd` and `SURNAME-FIRSTNAME-Exam1.pdf`.
+
+By a *report*, I mean that disjointed answers are not acceptable. Synthesize the parts into a coherent story. Be sure, however, to address all parts indicated in the question as you are responsible for everything that is asked. Make your report reader friendly - **concise**, but **informative** and conveying **mastery** of course concepts and skills. Please see `STAT_757_Exam1_rubric.pdf` for how you will be assessed.
+
+## References
+
+
+![](F:/unr/c14.png)
+![](F:/unr/c15.png)
+![](F:/unr/c16.png)
+![](F:/unr/c17.png)
+
+In any data analysis, we should start by first plotting our data in order to have an idea of any obvious relationship present. Below we can see scatter plot and line of best fit. 
+
+```{r}
+my_data_path <- "F:/unr/4th sem/applied regression analysis/Assignments/Exam1"
+adData <- read.csv(file.path(my_data_path,"AdRevenue.csv"),header=TRUE) 
+attach(adData)
+
+#Figure 2.6 on page 38
+plot(adData$Circulation,adData$AdRevenue,xlab="Circulation",
+ylab="AdRevenue")
+
+
+```
+
+From the figure above, we can see that the data points are highly concentrated around a fixed area, and there are other data points that are very scattered. If we draw a linear regression line, we will have a few leverage points. I think that will not be good. Therefore, we might need to perform some transformation.
+
+Let us now try a linear model. We can use functions available at R to construct linear models.
+
+```{r}
+par(mfrow=c(1,1))
+plot(adData$Circulation,adData$AdRevenue,xlab="Circulation",ylab="Ad Revenue")
+abline(lsfit(adData$Circulation,adData$AdRevenue))
+```
+
+
+
+```{r}
+model<-lm(adData$AdRevenue~adData$Circulation)
+summary(model)
+```
+
+
+```{r}
+
+par(mfrow=c(2,2))
+plot(model)
+
+```
+
+From the above analysis, we can see abrupt change in the standardized residuals in the bottom left hand figure. Similarly, we can see that the residuals in the top left are changing. This violates our assumption of constant variance. Also the Q-Q plot indicates that the residuals are not normally distributed. Thus, this model might not be appropriate model for our data.
+
+
+From our observations so far, we derived that we may need to perform some transformation to our data in order to generate a good model.
+
+Next, I have compiled some statistics for different models, log and square root transformation,and combinations of them. The exact formula and figures can be found at Appendix 1.
+
+
+From Appendix 1,
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rllrl}
+\hline
+& Model & Residual & Multiple R-Squared & F-statistic \\
+\hline
+1 & $y=-29.45+132.91 \sqrt{X}$ & 41.2 & 0.901 & 304 \\
+2 & $\sqrt{y}=10.55+0.633 \sqrt{x} $ & 1.737 & 0.79 & 261.4 \\
+3 & $\sqrt{y}=6.66+ 3.88\sqrt{x} $ & 1.23 & 0.89 & 579.6 \\
+4 & $log(y)=4.67+0.528 log(x) $ & 0.17 & 0.881 & 503.6 \\
+5 & $y=98.63+123.55log(x) $ & 65.24 & 0.748 & 202 \\
+6 & $log(y)=4.74+ 0.07x $ & 0.307 & 0.639 & 120.9 \\
+7 & $log(\sqrt{y})= 2.33 + 0.52 log (\sqrt{x})$ & 0.088 & 0.88 & 503.6 \\
+
+\hline
+\end{tabular}
+\end{table}
+
+
+
+
+
+It seems that log-log transformation and log(Sqrt)-log(sqrt) transformation are almost similar. But since the Residual Standard error for Log(sqrt)-log(sqrt) is lower than that of Log-log transformation, this means that the residual errors in log(sqrt) is smaller than that of log transformation. Hence, numerically I would prefer logSqrt.
+log(Sqrt(AdReveue))= 2.34 + 0.52 *log(Sqrt(Circulation))
+
+Although, logSqrt transformation is numerically slightly better, for ease of interpretation, I might go with simply log-log transformation too. 
+log(AdRevenue)= 4.67 + 0.52 * log(Circulation)
+
+
+Let us now find Prediction interval for 0.5 and 20 million circulation (using only log-log transformation model) that we just selected.
+From Appendix 1,
+
+For 0.5 (=-0.691 in log scale) million spent in circulation, we have
+in log scale (3.94, 4.66) which when changed to normal scale is (51.41,105.63) in thousands.
+
+
+
+For 20 million(=2.99 in log scale) million spent in circulation, we have
+in log scale (5.88, 6.62) which when changed to normal scale is (357.8,749.94) in thousands.
+
+Let us now analyse the model in terms of weakness.
+Although log-log model was the model that we selected, and it is best that we have found so far among different combinations of transformation we have tested, but we can still see that variance is slightly increasing for this model too.
+There are a few outliers which have not been addressed seperately in the model. We could infact do a closer analysis to reveal any important insight on these outlier cases. 
+Addressing these issues by removing them altogether or creating a seperate model for them could infact lead to better model.
+
+
+How about we try some polynomial regression model? It could be a good fit to our model.
+Let us now try to develop polynomial regression model upto order of 3.
+We can develop the following polynomial models. Refer Appendix 2 for the exact code and figures.
+
+From Appendix 2,
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rllrl}
+\hline
+& Model & Residual & Multiple R-Squared & F-statistic \\
+\hline
+1 & $y=88.13+29.5x-0.23x^2$ & 41.2 & 0.901 & 304 \\
+2 & $y=59.17+51.23x-2.5x^2+0.05x^3 $ & 34.06 & 0.93 & 308.1 \\
+3 & $y=95.93+ 24x-0.0024x^3 $ & 42.25 & 0.8959 & 288.3 \\
+4 & $y=136.57+1.61x^2- 0.02x^3$ & 56.49 & 0.813 & 146.5 \\
+5 & $y=150+0.02x^3 $ & 69.83 & 0.7114 & 167.6 \\
+6 & $y=143.12+ 0.73x^2 $ & 60.57 & 0.7829 & 245 \\
+
+\hline
+\end{tabular}
+\end{table}
+
+ After comparing all the models and the plots of sqroot of standardized residuals, we observe that none of the models produce stable variance. But if we have to select one among them, because the second model is the one with most stable variance in the region of maximum points, I would select it. 
+ 
+From Appendix 2,
+
+The 95% prediction interval adRevenue when circulation= 0.5 million, is (14.92, 153.41) thousands.
+
+
+The 95% prediction interval for adRevenue when circulation=20 million is (418.179,580.8878)
+
+Again, lets try to analyse this model in terms of its weakness.
+We can see from the plot of Sqroot of Standardized residual that the variance is not constant for any of the models, and we just the best among these models. So, it violates our assumption of constant variance, which in itself is sufficient to not regard this model as proper model to predict any prediction.
+
+There are a few outliers and leverage points in this case which has not been addressed by the model by either removing them or studying them seperately.
+
+
+## Conclusion:
+
+From the above analysis, we can see that the variance for Log-log transformed model is more stable than that of the polynomial case. From this reason only, we should be able to say that log-log transformed model is better than polynomial regression.
+
+Also F-statistic for Log-log transformed model is larger than its counterpart, hence log-log transformed model is better.
+
+
+Also,
+
+The prediction interval for Log-log transformed model is: 
+For 0.5 circulation, (51.41,105.63), and for 20 million circulation, (357.8,749.94)
+
+For polynomial regression,
+For 0.5 M circulation (14.92,153.41) and for 20 million circulation, (418.179, 580.78)
+
+Since the prediction interval for 0.5 million is larger for polynomial regression (and the larger the prediction interval, the greater the chance our predicted value lies inside the range), I would select polynomial regression range for 0.5 Million  case.
+
+Since the prediction interval for 20 million is larger for log-log transformation (and for the same reason as above), I would select log-log transformed model for 20 million circulation.
+
+
+---
+
+
+# Appendix 1
+Since the units of measurement is in dollars for both dependent and independent variables, we might use square-root transformation.
+
+Let us first apply square-root transformation to circulation.
+```{r}
+sqrtCirculation <- sqrt(adData$Circulation)
+plot(sqrtCirculation,adData$AdRevenue,xlab="Circulation",
+ylab="AdRevenue")
+#sqrtrooms <- sqrt(Rooms)
+m2 <- lm(adData$AdRevenue~sqrtCirculation)
+summary(m2)
+
+
+par(mfrow=c(2,2))
+plot(m2)
+```
+
+We can see from the bottom left figure that the variance has further been stabilized in the (0-200) region of fitted values, but has been destabilized in bigger fitted values.
+
+
+Lets us now try square root transformation of adRevenue and original values of Circulation.
+```{r}
+sqrtAdRevenue <- sqrt(adData$AdRevenue)
+plot(adData$Circulation,sqrtAdRevenue,xlab="Circulation",
+ylab="AdRevenue")
+#sqrtrooms <- sqrt(Rooms)
+m3 <- lm(sqrtAdRevenue~adData$Circulation)
+summary(m3)
+
+
+par(mfrow=c(2,2))
+plot(m3)
+```
+
+It seems the variance has been further destabilized from this transformation as can be seen from plot of Sqrt Standardized residuals and fitted values at bottom left.
+So, we don't favor this model.
+
+Now, lets try to transfrom both variables by sqrt transformation.
+```{r}
+sqrtAdRevenue <- sqrt(adData$AdRevenue)
+sqrtCirculation <- sqrt(adData$Circulation)
+plot(sqrtCirculation,sqrtAdRevenue,xlab="Circulation",
+ylab="AdRevenue")
+#sqrtrooms <- sqrt(Rooms)
+m4 <- lm(sqrtAdRevenue~sqrtCirculation)
+summary(m4)
+par(mfrow=c(2,2))
+plot(m4)
+```
+ It is comparatively better than the previous models.
+ 
+ 
+ Let us now use Log log transformation.
+ 
+```{r} 
+ #Regression output on page 82
+plot(log(adData$Circulation),log(adData$AdRevenue),xlab="log(Circulation)",ylab="log(Revenue)")
+abline(lsfit(log(adData$Circulation),log(adData$AdRevenue)))
+
+m5 <- lm(log(adData$AdRevenue)~log(adData$Circulation))
+summary(m5)
+
+par(mfrow=c(2,2))
+plot(m5)
+
+```
+We can see that the data points are not distributed randomly across the line of fit. Also, now this is tremendous stabilization of our variance so far.
+
+Let us try with only one variable log-transformed.
+
+
+```{r} 
+ #Regression output on page 82
+plot(log(adData$Circulation),(adData$AdRevenue),xlab="log(Circulation)",ylab="(Revenue)")
+abline(lsfit(log(adData$Circulation),(adData$AdRevenue)))
+
+m6 <- lm((adData$AdRevenue)~log(adData$Circulation))
+summary(m6)
+
+par(mfrow=c(2,2))
+plot(m6)
+
+```
+It is not better compared to both variable transformed by log transformation.
+
+```{r} 
+ #Regression output on page 82
+plot((adData$Circulation),log(adData$AdRevenue),xlab="(Circulation)",ylab="log(Revenue)")
+abline(lsfit((adData$Circulation),log(adData$AdRevenue)))
+
+m7 <- lm(log(adData$AdRevenue)~(adData$Circulation))
+summary(m7)
+
+par(mfrow=c(2,2))
+plot(m7)
+
+```
+
+This is also really bad. So, up until this point our best fit is log-log transformation.
+
+
+Let us finally try log transformation of sqrt transformation.
+
+```{r}
+sqrtAdRevenue <- sqrt(adData$AdRevenue)
+sqrtCirculation <- sqrt(adData$Circulation)
+plot(log(sqrtCirculation),log(sqrtAdRevenue),xlab="log(sqrt(Circulation))",
+ylab="log(sqrt(AdRevenue))")
+abline(lsfit((log(sqrtCirculation)),log(sqrtAdRevenue)))
+#sqrtrooms <- sqrt(Rooms)
+m8 <- lm(log(sqrtAdRevenue)~log(sqrtCirculation))
+summary(m8)
+
+
+par(mfrow=c(2,2))
+plot(m8)
+```
+
+For Prediction Interval at 0.5 million,
+
+```{r}
+#my_data_path <- "F:/unr/4th sem/applied regression analysis/Assignments/Exam1"
+#adData <- read.csv(file.path(my_data_path,"AdRevenue.csv"),header=TRUE) 
+#attach(adData)
+#m5 <- lm(log(adData$AdRevenue)~log(adData$Circulation))
+#summary(m5)
+#newData1=data.frame(log(adData$Circulation)=-0.6931)
+lRevenue<-log(adData$AdRevenue)
+lCirculation<-log(adData$Circulation)
+m5<-lm(lRevenue~lCirculation)
+newData<-data.frame(lCirculation=-0.691)    #log(.5)=-0.691, natural log (ln) is considered
+predict(m5,newData,interval="prediction",level=0.95)
+```
+
+
+Similarly, for 20 million, the prediction interval is:
+```{r}
+lRevenue<-log(adData$AdRevenue)
+lCirculation<-log(adData$Circulation)
+m5<-lm(lRevenue~lCirculation)
+newData<-data.frame(lCirculation=2.99)    
+#log(20)=2.99, natural log (ln) is considered
+predict(m5,newData,interval="prediction",level=0.95)
+detach(adData)
+```
+
+
+# Appendix 2
+
+## 1st Try: adRevenue = Circulation + Circulation ^2
+
+
+```{r}
+my_data_path <- "F:/unr/4th sem/applied regression analysis/Assignments/Exam1"
+adData <- read.csv(file.path(my_data_path,"AdRevenue.csv"),header=TRUE) 
+attach(adData)
+Circulation=adData$Circulation;
+AdRevenue=adData$AdRevenue;
+polym1 <- lm(AdRevenue~ Circulation + I(Circulation^2))
+summary(polym1)
+plot(Circulation,AdRevenue,xlab="Circulation")
+CirculationNew <- seq(0,40,len=40)
+lines(CirculationNew,predict(polym1,newdata=data.frame(Circulation=CirculationNew)))
+
+
+par(mfrow=c(2,2))
+plot(polym1)
+
+```
+We can see that the variance is highly varying which indicates that this model is a bad model for our data.
+
+
+## 2nd Try: adRevenue = Circulation + Circulation ^2 + Circulatio^3
+```{r}
+my_data_path <- "F:/unr/4th sem/applied regression analysis/Assignments/Exam1"
+adData <- read.csv(file.path(my_data_path,"AdRevenue.csv"),header=TRUE) 
+attach(adData)
+Circulation=adData$Circulation;
+AdRevenue=adData$AdRevenue;
+polym1 <- lm(AdRevenue~ Circulation + I(Circulation^2)+ I(Circulation^3))
+summary(polym1)
+
+plot(Circulation,AdRevenue,xlab="Circulation")
+CirculationNew <- seq(0,40,len=40)
+lines(CirculationNew,predict(polym1,newdata=data.frame(Circulation=CirculationNew)))
+
+par(mfrow=c(2,2))
+plot(polym1)
+
+```
+
+## 3rd Try: adRevenue = Circulation + Circulation^3
+```{r}
+my_data_path <- "F:/unr/4th sem/applied regression analysis/Assignments/Exam1"
+adData <- read.csv(file.path(my_data_path,"AdRevenue.csv"),header=TRUE) 
+attach(adData)
+Circulation=adData$Circulation;
+AdRevenue=adData$AdRevenue;
+polym1 <- lm(AdRevenue~ Circulation +  I(Circulation^3))
+summary(polym1)
+
+plot(Circulation,AdRevenue,xlab="Circulation")
+CirculationNew <- seq(0,40,len=40)
+lines(CirculationNew,predict(polym1,newdata=data.frame(Circulation=CirculationNew)))
+
+par(mfrow=c(2,2))
+plot(polym1)
+
+```
+
+
+## 4th Try: adRevenue =  Circulation ^2 + Circulation^3
+```{r}
+my_data_path <- "F:/unr/4th sem/applied regression analysis/Assignments/Exam1"
+adData <- read.csv(file.path(my_data_path,"AdRevenue.csv"),header=TRUE) 
+attach(adData)
+Circulation=adData$Circulation;
+AdRevenue=adData$AdRevenue;
+polym1 <- lm(AdRevenue~ I(Circulation^2)+ I(Circulation^3))
+plot(Circulation,AdRevenue,xlab="Circulation")
+summary(polym1)
+CirculationNew <- seq(0,40,len=40)
+lines(CirculationNew,predict(polym1,newdata=data.frame(Circulation=CirculationNew)))
+
+par(mfrow=c(2,2))
+plot(polym1)
+
+```
+
+## 5th Try: adRevenue =   Circulation^3
+```{r}
+my_data_path <- "F:/unr/4th sem/applied regression analysis/Assignments/Exam1"
+adData <- read.csv(file.path(my_data_path,"AdRevenue.csv"),header=TRUE) 
+attach(adData)
+Circulation=adData$Circulation;
+AdRevenue=adData$AdRevenue;
+polym1 <- lm(AdRevenue~  I(Circulation^3))
+summary(polym1)
+
+plot(Circulation,AdRevenue,xlab="Circulation")
+CirculationNew <- seq(0,40,len=40)
+lines(CirculationNew,predict(polym1,newdata=data.frame(Circulation=CirculationNew)))
+
+par(mfrow=c(2,2))
+plot(polym1)
+
+```
+
+## 6th Try: adRevenue =  Circulation ^2
+```{r}
+my_data_path <- "F:/unr/4th sem/applied regression analysis/Assignments/Exam1"
+adData <- read.csv(file.path(my_data_path,"AdRevenue.csv"),header=TRUE) 
+attach(adData)
+Circulation=adData$Circulation;
+AdRevenue=adData$AdRevenue;
+polym1 <- lm(AdRevenue~ I(Circulation^2))
+summary(polym1)
+
+plot(Circulation,AdRevenue,xlab="Circulation")
+CirculationNew <- seq(0,40,len=40)
+lines(CirculationNew,predict(polym1,newdata=data.frame(Circulation=CirculationNew)))
+
+par(mfrow=c(2,2))
+plot(polym1)
+
+```
+---
+For prediction interval: 
+```{r}
+
+my_data_path <- "F:/unr/4th sem/applied regression analysis/Assignments/Exam1"
+adData <- read.csv(file.path(my_data_path,"AdRevenue.csv"),header=TRUE) 
+#attach(adData)
+Circulation=adData$Circulation;
+AdRevenue=adData$AdRevenue;
+polym1 <- lm(AdRevenue~ Circulation + I(Circulation^2)+ I(Circulation^3))
+
+newData<-data.frame(Circulation=0.5)   
+predict(polym1,newData,interval="prediction",level=0.95)
+#detach(adData)
+```
+
+For prediction interval:
+```{r}
+my_data_path <- "F:/unr/4th sem/applied regression analysis/Assignments/Exam1"
+adData <- read.csv(file.path(my_data_path,"AdRevenue.csv"),header=TRUE) 
+#attach(adData)
+Circulation=adData$Circulation;
+AdRevenue=adData$AdRevenue;
+polym1 <- lm(AdRevenue~ Circulation + I(Circulation^2)+ I(Circulation^3))
+
+newData<-data.frame(Circulation=20)   
+predict(polym1,newData,interval="prediction",level=0.95)
+#detach(adData)
+```

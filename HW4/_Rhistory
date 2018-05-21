@@ -1,0 +1,512 @@
+kicker <- read.csv("F:\unr\4th sem\applied regression analysis\Assignments\HW1\FieldGoals2003to2006.csv",header=T) ## adjust this as needed.
+kicker <- read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW1/FieldGoals2003to2006.csv",header=T) ## adjust this as needed.
+## Sorry this line is too long, the data are labeled 'FieldGoals2003to2006.csv'
+attach(kicker) ## THIS IS NOT USUALLY RECOMMENDED, ASK ME IN CLASS WHY NOT.
+#Figure 1.1 on page 2
+plot(kicker$FGtM1,kicker$FGt,
+main="Unadjusted Correlation = -0.139",
+xlab="Field Goal Percentage in Year t-1",ylab="Field Goal Percentage in Year t")
+#p-values on page 3
+fit.1 <- lm(FGt~FGtM1 +Name +FGtM1:Name,data=kicker)
+anova(fit.1)
+#slope and interecepts of lines in Figure 1.2 on page 3
+fit.2 <- lm(FGt ~ Name + FGtM1,data=kicker)
+fit.2
+#Figure 1.2 on page 3
+plot(kicker$FGtM1,kicker$FGt,
+main="Slope of each line = -0.504",
+xlab="Field Goal Percentage in Year t-1",
+ylab="Field Goal Percentage in Year t")
+tt <- seq(60,100,length=1001)
+slope.piece <- summary(fit.2)$coef[20]*tt
+lines(tt,summary(fit.2)$coef[1]+slope.piece,lty=2)
+for (i in 2:19)
+{lines(tt,summary(fit.2)$coef[1]+summary(fit.2)$coef[i]+slope.piece,lty=2)}
+detach(kicker)
+nyc <- read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW1/nyc.csv",header=TRUE)
+attach(nyc)
+#Figure 1.5 on page 7
+pairs(Price~Food+Decor+Service,data=nyc,gap=0.4,
+cex.labels=1.5)
+#Figure 1.6 on page 10
+boxplot(Price~East,ylab="Price",
+xlab="East (1 = East of Fifth Avenue)")
+detach(nyc)
+Bordeaux <- read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW1/Bordeaux.csv", header=TRUE)
+attach(Bordeaux)
+#Figure 1.7 on page 10
+pairs(Price~ParkerPoints+CoatesPoints,data=Bordeaux,gap=0.4,cex.labels=1.5)
+#Figure 1.8 on page 11
+par(mfrow=c(2,3))
+boxplot(Price~P95andAbove,ylab="Price",xlab="P95andAbove")
+boxplot(Price~FirstGrowth,ylab="Price",xlab="First Growth")
+boxplot(Price~CultWine,ylab="Price",xlab="Cult Wine")
+boxplot(Price~Pomerol,ylab="Price",xlab="Pomerol")
+boxplot(Price~VintageSuperstar,ylab="Price",xlab="Vintage Superstar")
+#Figure 1.9 on page 12
+par(mfrow=c(1,1))
+pairs(log(Price)~log(ParkerPoints)+log(CoatesPoints),data=Bordeaux,gap=0.4,cex.labels=1.5)
+#Figure 1.10 on page 13
+par(mfrow=c(2,3))
+boxplot(log(Price)~P95andAbove,ylab="log(Price)",
+xlab="P95andAbove")
+boxplot(log(Price)~FirstGrowth,ylab="log(Price)",
+xlab="First Growth")
+boxplot(log(Price)~CultWine,ylab="log(Price)",
+xlab="Cult Wine")
+boxplot(log(Price)~Pomerol,ylab="log(Price)",
+xlab="Pomerol")
+boxplot(log(Price)~VintageSuperstar,ylab="log(Price)",
+xlab="Vintage Superstar")
+detach(Bordeaux)
+set.seed(5)
+x<-rnorm(100,mean=0,sd=100)
+summary(x)
+plot(x)
+set.seed=10
+var_beta<-rbeta(1000,2,2)
+summary(var_beta)
+plot(var_beta)
+set.seed=15
+var_bino<-rbino(10000,10,0.2)
+set.seed=15
+var_bino<-rbinom(10000,10,0.2)
+summary(var_bino)
+plot(var_bino)
+summary(var_beta)
+kicker <- read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW1/FieldGoals2003to2006.csv",header=T) ## adjust this as needed.
+## Sorry this line is too long, the data are labeled 'FieldGoals2003to2006.csv'
+attach(kicker) ## THIS IS NOT USUALLY RECOMMENDED, ASK ME IN CLASS WHY NOT.
+#Figure 1.1 on page 2
+plot(kicker$FGtM1,kicker$FGt,
+main="Unadjusted Correlation = -0.139",
+xlab="Field Goal Percentage in Year t-1",ylab="Field Goal Percentage in Year t")
+#p-values on page 3
+fit.1 <- lm(FGt~FGtM1 +Name +FGtM1:Name,data=kicker)
+anova(fit.1)
+#slope and interecepts of lines in Figure 1.2 on page 3
+fit.2 <- lm(FGt ~ Name + FGtM1,data=kicker)
+fit.2
+#Figure 1.2 on page 3
+plot(kicker$FGtM1,kicker$FGt,
+main="Slope of each line = -0.504",
+xlab="Field Goal Percentage in Year t-1",
+ylab="Field Goal Percentage in Year t")
+tt <- seq(60,100,length=1001)
+slope.piece <- summary(fit.2)$coef[20]*tt
+lines(tt,summary(fit.2)$coef[1]+slope.piece,lty=2)
+for (i in 2:19)
+{lines(tt,summary(fit.2)$coef[1]+summary(fit.2)$coef[i]+slope.piece,lty=2)}
+detach(kicker)
+circulation <- read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW1/circulation.txt", header=TRUE, sep="\t")
+attach(circulation)
+#Figure 1.3 on page 5
+plot(Weekday,Sunday,xlab="Weekday Circulation",ylab="Sunday Circulation",
+pch=Tabloid.with.a.Serious.Competitor+1,col=Tabloid.with.a.Serious.Competitor+1)
+legend(110000, 1600000,legend=c("0","1"),
+pch=1:2,col=1:2,title="Tabloid dummy variable")
+#Figure 1.4 on page 5
+plot(log(Weekday),log(Sunday),xlab="log(Weekday Circulation)",ylab="log(Sunday Circulation)",
+pch=Tabloid.with.a.Serious.Competitor+1,
+col=Tabloid.with.a.Serious.Competitor+1)
+legend(11.6, 14.1,legend=c("0","1"),pch=1:2,col=1:2,
+title="Tabloid dummy variable")
+detach(circulation)
+nyc <- read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW1/nyc.csv",header=TRUE)
+attach(nyc)
+#Figure 1.5 on page 7
+pairs(Price~Food+Decor+Service,data=nyc,gap=0.4,
+cex.labels=1.5)
+#Figure 1.6 on page 10
+boxplot(Price~East,ylab="Price",
+xlab="East (1 = East of Fifth Avenue)")
+detach(nyc)
+Bordeaux <- read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW1/Bordeaux.csv", header=TRUE)
+attach(Bordeaux)
+#Figure 1.7 on page 10
+pairs(Price~ParkerPoints+CoatesPoints,data=Bordeaux,gap=0.4,cex.labels=1.5)
+#Figure 1.8 on page 11
+par(mfrow=c(2,3))
+boxplot(Price~P95andAbove,ylab="Price",xlab="P95andAbove")
+boxplot(Price~FirstGrowth,ylab="Price",xlab="First Growth")
+boxplot(Price~CultWine,ylab="Price",xlab="Cult Wine")
+boxplot(Price~Pomerol,ylab="Price",xlab="Pomerol")
+boxplot(Price~VintageSuperstar,ylab="Price",xlab="Vintage Superstar")
+#Figure 1.9 on page 12
+par(mfrow=c(1,1))
+pairs(log(Price)~log(ParkerPoints)+log(CoatesPoints),data=Bordeaux,gap=0.4,cex.labels=1.5)
+#Figure 1.10 on page 13
+par(mfrow=c(2,3))
+boxplot(log(Price)~P95andAbove,ylab="log(Price)",
+xlab="P95andAbove")
+boxplot(log(Price)~FirstGrowth,ylab="log(Price)",
+xlab="First Growth")
+boxplot(log(Price)~CultWine,ylab="log(Price)",
+xlab="Cult Wine")
+boxplot(log(Price)~Pomerol,ylab="log(Price)",
+xlab="Pomerol")
+boxplot(log(Price)~VintageSuperstar,ylab="log(Price)",
+xlab="Vintage Superstar")
+detach(Bordeaux)
+set.seed(5)
+x<-rnorm(100,mean=0,sd=100)
+summary(x)
+plot(x)
+knitr::opts_chunk$set(echo = TRUE)
+set.seed(5)
+x<-rnorm(100,mean=0,sd=100)
+summary(x)
+plot(x)
+my_data=read.csv("F:\unr\4th sem\applied regression analysis\Assignments\HW2\playbill.csv",header=TRUE)
+plot(playbill$LastWeek,playbill$CurrentWeek,xlab="Gross box office results previous week",
+ylab="Gross box office results current week")
+my_data=read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW2/playbill.csv",header=TRUE)
+plot(playbill$LastWeek,playbill$CurrentWeek,xlab="Gross box office results previous week",
+ylab="Gross box office results current week")
+library(knitr)
+opts_chunk$set(echo = TRUE)
+playbill=read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW2/playbill.csv",header=TRUE)
+plot(playbill$LastWeek,playbill$CurrentWeek,xlab="Gross box office results previous week",
+ylab="Gross box office results current week")
+summary(myLinearModel)
+myLinearModel<-lm(formula=playbill$CurrentWeek~playbill$LastWeek,data=playbill)
+summary(myLinearModel)
+knit_with_parameters('F:/unr/4th sem/applied regression analysis/Assignments/HW2/Assignment2.rmd')
+library("pander", lib.loc="~/R/win-library/3.3")
+confint(myLinearModel,'playbill$Lastweek',level=0.
+confint(myLinearModel,'playbill$Lastweek',level=0.95)
+confint(myLinearModel,'playbill$Lastweek',level=0.95)
+confint(myLinearModel,'playbill$LastWeek',level=0.95)
+library("pander", lib.loc="~/R/win-library/3.3")
+library(knitr)
+opts_chunk$set(echo = TRUE)
+modelSummary<-summary(myLinearModel)
+modelCoeffs<-modelSummary$Coefficients
+beta.estimate<-modelCoeffs["playbill$LastWeek","Estimate"]
+std.error<-modelCoeffs["playbill$LastWeek","Std. Error"]
+t_value<-beta.estimate/std.error
+p_value<-2*pt(-abs(t_value),df=nrow(playbill)-ncol(playbill))
+p_value
+t_Value
+t_value
+modelCoeffs
+modelSummary
+modelCoeffs
+modelSummary$coefficients
+modelSummary<-summary(myLinearModel)
+modelCoeffs<-modelSummary$coefficients
+beta.estimate<-modelCoeffs["playbill$LastWeek","Estimate"]
+std.error<-modelCoeffs["playbill$LastWeek","Std. Error"]
+t_value<-beta.estimate/std.error
+p_value<-2*pt(-abs(t_value),df=nrow(playbill)-ncol(playbill))
+t_value
+p_value
+modelSummary<-summary(myLinearModel)
+modelCoeffs<-modelSummary$coefficients
+beta.estimate<-modelCoeffs["(Intercept)","Estimate"]
+std.error<-modelCoeffs["(Intercept)","Std. Error"]
+t_value<-beta.estimate/std.error
+p_value<-2*pt(-abs(t_value),df=nrow(playbill)-ncol(playbill))
+t_value
+p_value
+modelSummary<-summary(myLinearModel)
+modelCoeffs<-modelSummary$coefficients
+beta.estimate<-modelCoeffs["(Intercept)","Estimate"]
+std.error<-modelCoeffs["(Intercept)","Std. Error"]
+t_value<-(beta.estimate-10000)/std.error
+p_value<-2*pt(-abs(t_value),df=nrow(playbill)-ncol(playbill))
+t_value
+p_value
+beta.estimate
+newdata<-data.frame(playbill$LastWeek=400000)
+newdata<-data.frame(400000)
+predict(myLinearModel, newdata, interval="predict")
+newdata<-data.frame(400000)
+predict(myLinearModel, newdata, interval="terms")
+newdata<-data.frame(400000)
+predict(myLinearModel, newdata, interval="none")
+beta0.estimate<-modelCoeffs["(Intercept)","Estimate"]
+beta1.estimate<-modelCoeffs["playbill$LastWeek","Estimate"]
+predictedValue<-beta0.estimate+400000*beta1.estimate
+predictedValue
+beta0.estimate<-modelCoeffs["(Intercept)","Estimate"]
+beta1.estimate<-modelCoeffs["playbill$LastWeek","Estimate"]
+predictedValue<-beta0.estimate+400000*beta1.estimate
+predictedValue
+predict(myLinearModel,newdata=list(playbill$LastWeek=400000),interval="confidence",level=0.95)
+beta0.estimate<-modelCoeffs["(Intercept)","Estimate"]
+beta1.estimate<-modelCoeffs["playbill$LastWeek","Estimate"]
+predictedValue<-beta0.estimate+400000*beta1.estimate
+predictedValue
+predict(myLinearModel,newdata=list(playbill$LastWeek<-400000),interval="confidence",level=0.95)
+beta0.estimate<-modelCoeffs["(Intercept)","Estimate"]
+beta1.estimate<-modelCoeffs["playbill$LastWeek","Estimate"]
+predictedValue<-beta0.estimate+400000*beta1.estimate
+predictedValue
+predict(myLinearModel,newdata=list(playbill$LastWeek<-400000),interval="prediction",level=0.95)
+beta0.estimate<-modelCoeffs["(Intercept)","Estimate"]
+beta1.estimate<-modelCoeffs["playbill$LastWeek","Estimate"]
+predictedValue<-beta0.estimate+400000*beta1.estimate
+predictedValue
+predict(myLinearModel,newdata=data.frame(playbill$LastWee=400000),interval="prediction",level=0.95)
+beta0.estimate<-modelCoeffs["(Intercept)","Estimate"]
+beta1.estimate<-modelCoeffs["playbill$LastWeek","Estimate"]
+predictedValue<-beta0.estimate+400000*beta1.estimate
+predictedValue
+predict(myLinearModel,newdata=data.frame(playbill$LastWee<-400000),interval="prediction",level=0.95)
+beta0.estimate<-modelCoeffs["(Intercept)","Estimate"]
+beta1.estimate<-modelCoeffs["playbill$LastWeek","Estimate"]
+predictedValue<-beta0.estimate+400000*beta1.estimate
+predictedValue
+predict(myLinearModel,newdata=data.frame(playbill$LastWeek<-400000),interval="prediction",level=0.95)
+beta0.estimate<-modelCoeffs["(Intercept)","Estimate"]
+beta1.estimate<-modelCoeffs["playbill$LastWeek","Estimate"]
+predictedValue<-beta0.estimate+400000*beta1.estimate
+predictedValue
+predict(myLinearModel,data.frame(playbill$LastWeek<-400000),interval="prediction",level=0.95)
+a<-playbill$CurrentWeek
+b<-playbill$LastWeek
+myLinearModel<-lm(formula=a~b,data=playbill)
+beta0.estimate<-modelCoeffs["(Intercept)","Estimate"]
+beta1.estimate<-modelCoeffs["playbill$LastWeek","Estimate"]
+predictedValue<-beta0.estimate+400000*beta1.estimate
+predictedValue
+predict(myLinearModel,data.frame(b=400000),interval="prediction",level=0.95)
+a<-playbill$CurrentWeek
+b<-playbill$LastWeek
+myLinearModel<-lm(formula=a~b,data=playbill)
+beta0.estimate<-modelCoeffs["(Intercept)","Estimate"]
+beta1.estimate<-modelCoeffs["playbill$LastWeek","Estimate"]
+predictedValue<-beta0.estimate+400000*beta1.estimate
+predictedValue
+predict(myLinearModel,data.frame(b=399637.5),interval="prediction",level=0.95)
+a<-playbill$CurrentWeek
+b<-playbill$LastWeek
+myLinearModel<-lm(formula=a~b,data=playbill)
+beta0.estimate<-modelCoeffs["(Intercept)","Estimate"]
+beta1.estimate<-modelCoeffs["playbill$LastWeek","Estimate"]
+predictedValue<-beta0.estimate+400000*beta1.estimate
+predictedValue
+#predict(myLinearModel,data.frame(b=399637.5),interval="prediction",level=0.95)
+predict(myLinearModel,data.frame(playbill$LastWeek=400000),interval="prediction",level=.95)
+a<-playbill$CurrentWeek
+b<-playbill$LastWeek
+myLinearModel<-lm(formula=a~b,data=playbill)
+beta0.estimate<-modelCoeffs["(Intercept)","Estimate"]
+beta1.estimate<-modelCoeffs["playbill$LastWeek","Estimate"]
+predictedValue<-beta0.estimate+400000*beta1.estimate
+predictedValue
+#predict(myLinearModel,data.frame(b=399637.5),interval="prediction",level=0.95)
+predict(myLinearModel,data.frame(playbill$LastWeek<-400000),interval="prediction",level=.95)
+source('~/.active-rstudio-document', encoding = 'UTF-8', echo=TRUE)
+source('~/.active-rstudio-document', encoding = 'UTF-8', echo=TRUE)
+a<-playbill$CurrentWeek
+b<-playbill$LastWeek
+myLinearModel<-lm(formula=a~b,data=playbill)
+beta0.estimate<-modelCoeffs["(Intercept)","Estimate"]
+beta1.estimate<-modelCoeffs["playbill$LastWeek","Estimate"]
+predictedValue<-beta0.estimate+400000*beta1.estimate
+predictedValue
+#predict(myLinearModel,data.frame(b=399637.5),interval="prediction",level=0.95)
+new<-400000
+predict(myLinearModel,new,interval="prediction",level=.95)
+a<-playbill$CurrentWeek
+b<-playbill$LastWeek
+myLinearModel<-lm(formula=a~b,data=playbill)
+beta0.estimate<-modelCoeffs["(Intercept)","Estimate"]
+beta1.estimate<-modelCoeffs["playbill$LastWeek","Estimate"]
+predictedValue<-beta0.estimate+400000*beta1.estimate
+predictedValue
+#predict(myLinearModel,data.frame(b=399637.5),interval="prediction",level=0.95)
+new<-dataframe(400000)
+a<-playbill$CurrentWeek
+b<-playbill$LastWeek
+myLinearModel<-lm(formula=a~b,data=playbill)
+beta0.estimate<-modelCoeffs["(Intercept)","Estimate"]
+beta1.estimate<-modelCoeffs["playbill$LastWeek","Estimate"]
+predictedValue<-beta0.estimate+400000*beta1.estimate
+predictedValue
+#predict(myLinearModel,data.frame(b=399637.5),interval="prediction",level=0.95)
+new<-data.frame(400000)
+predict(myLinearModel,new,interval="prediction",level=.95)
+err=
+a<-playbill$CurrentWeek
+b<-playbill$LastWeek
+myLinearModel<-lm(formula=a~b,data=playbill)
+beta0.estimate<-modelCoeffs["(Intercept)","Estimate"]
+beta1.estimate<-modelCoeffs["playbill$LastWeek","Estimate"]
+predictedValue<-beta0.estimate+400000*beta1.estimate
+predictedValue
+predict(myLinearModel,data.frame(b=399637.5),interval="prediction",level=0.95)
+a<-playbill$CurrentWeek
+b<-playbill$LastWeek
+myLinearModel<-lm(formula=a~b,data=playbill)
+beta0.estimate<-modelCoeffs["(Intercept)","Estimate"]
+beta1.estimate<-modelCoeffs["playbill$LastWeek","Estimate"]
+predictedValue<-beta0.estimate+400000*beta1.estimate
+predictedValue
+predict(myLinearModel,data.frame(b=399637.5),interval="prediction",level=0.95)
+a<-playbill$CurrentWeek
+b<-playbill$LastWeek
+myLinearModel<-lm(formula=a~b,data=playbill)
+beta0.estimate<-modelCoeffs["(Intercept)","Estimate"]
+beta1.estimate<-modelCoeffs["playbill$LastWeek","Estimate"]
+predictedValue<-beta0.estimate+400000*beta1.estimate
+predictedValue
+predict(myLinearModel,data.frame(b=400000),interval="prediction",level=0.95)
+help(read.table)
+myData<-read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW2/playbill.csv",header=TRUE,delim='\t')
+myData<-read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW2/playbill.csv",header=TRUE,delim='/t')
+myData<-read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW2/playbill.csv")
+myData<-read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW2/playbill.csv",sep='\t',header=TRUE)
+myData<-read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW2/playbill.csv",sep='\t',header=TRUE)
+summary(myData)
+myData<-read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW2/indicators.txt",sep='\t',header=TRUE)
+myData<-read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW2/indicators.txt",sep="\t",header=TRUE)
+myData<-read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW2/indicators.txt",sep="\t")
+myData<-read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW2/indicators.txt",header=TRUE)
+summary(myData)
+myData<-read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW2/indicators.txt",header=TRUE)
+myData
+myData<-read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW2/indicators.txt",header=TRUE)
+myData
+myData$PriceChange
+myData<-read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW2/indicators.txt",header=TRUE)
+myData
+source('~/.active-rstudio-document', encoding = 'UTF-8', echo=TRUE)
+myData<-read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW2/indicators.txt",header=TRUE)
+plot(myData$PriceChange, myData$LoanPaymentsOverdue, xlab="Loan Payments Overdue",
+ylab="Price Change")
+myData<-read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW2/indicators.txt",header=TRUE)
+plot(myData$PriceChange, myData$LoanPaymentsOverdue, xlab="Loan Payments Overdue",
+ylab="Price Change")
+myLinearModel<-lm(PriceChange~LoanPaymentsOverdue,data=myData)
+myLinearModel<-lm(PriceChange~LoanPaymentsOverdue,data=myData)
+summary(myLinearModel)
+confint(myLinearModel,'myData$LoanPaymentsOverdue',level=0.95)
+confint(myLinearModel,'LoanPaymentsOverdue',level=0.95)
+modelSummary<-summary(myLinearModel)
+modelCoeffs<-modelSummary$coefficients
+intercept<-modelCoeffs["(Intercept)","Estimate"]
+slope<-modelCoeffs["LoanPaymentsOverdue","Estimate"]
+predictedValue<-intercept+4*slope
+predictedValue
+predict(myLinearModel,data.frame(b=4),interval="confidence",level=0.95)
+predict(myLinearModel,data.frame(LoanPaymentsOverdue=4),interval="confidence",level=0.95)
+invoiceData<-read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW2/invoices.txt",header=TRUE)
+invoiceData
+slope<-0.0112916
+stdError<-0.0008184
+numRow<-30
+numCol<-3
+t_value<-(slope-0.01)/stdError
+p_value<-2*pt(-abs(t_value),df=numRow-numCol)
+t_value
+p_value
+source('~/.active-rstudio-document', encoding = 'UTF-8', echo=TRUE)
+myData<-read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW2/invoices.txt",header=TRUE)
+myLinearModel<-lm(Time~Invoices,data=myData)
+summary(myLinearModel)
+predict(myLinearModel,data.frame(Invoices=130),interval="confidence",level=0.95)
+plot(playbill$CurrentWeek, playbill$LastWeek, xlab="Last Week", ylab="Current week", main="Regression")
+abline(myLinearModel,col="lighblue")
+plot(playbill$CurrentWeek, playbill$LastWeek, xlab="Last Week", ylab="Current week", main="Regression")
+abline(myLinearModel,col="lightblue")
+plot(playbill$CurrentWeek, playbill$LastWeek, xlab="Last Week", ylab="Current week", main="Regression")
+abline(myLinearModel,col="red")
+plot(playbill$CurrentWeek, playbill$LastWeek, xlab="Last Week", ylab="Current week", main="Regression")
+abline(6.805e+03,9.821e-01,col="red")
+plot(playbill$CurrentWeek, playbill$LastWeek, xlab="Last Week", ylab="Current week", main="Regression")
+abline(6.805e+03,9.821e-01,col="red")
+conf_interval<-predict(myLinearModel, interval="confidence", level=0.95)
+lines(conf_interval[,2],col="blue",lty=2)
+lines(conf_interval[,3],col="blue",lty=2)
+plot(playbill$CurrentWeek, playbill$LastWeek, xlab="Last Week", ylab="Current week", main="Regression")
+abline(6.805e+03,9.821e-01,col="red")
+conf_interval<-predict(myLinearModel, interval="confidence", level=0.95)
+conf_interval
+lines(conf_interval[,2],col="blue",lty=2)
+lines(conf_interval[,3],col="blue",lty=2)
+library(knitr)
+opts_chunk$set(echo = TRUE)
+confint(myLinearModel,'(Intercept)',level=0.95)
+confint(myLinearModel,beta0.estimate,level=0.95)
+confint(myLinearModel,'playbill$LastWeek',level=0.95)
+```{r}
+library(knitr)
+opts_chunk$set(echo = TRUE)
+abline(lsfit(indicators_v2$LoanPaymentsOverdue,indicators_v2$PriceChange))
+abline(lsfit(myData$LoanPaymentsOverdue,myData$PriceChange))
+summary(myLinearModel)
+myData<-read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW2/indicators.txt",header=TRUE)
+plot(myData$PriceChange, myData$LoanPaymentsOverdue, xlab="Loan Payments Overdue",
+ylab="Price Change")
+abline(0.641,0.0111,col='red')
+myData<-read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW2/indicators.txt",header=TRUE)
+plot(myData$PriceChange, myData$LoanPaymentsOverdue, xlab="Loan Payments Overdue",
+ylab="Price Change")
+abline(0.641,0.0111,col="red")
+abline(0.0112,0.641,col="red")
+myData<-read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW2/indicators.txt",header=TRUE)
+plot(myData$PriceChange, myData$LoanPaymentsOverdue, xlab="Loan Payments Overdue",
+ylab="Price Change")
+abline(0.0112,0.641,col="red")
+myData<-read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW2/indicators.txt",header=TRUE)
+plot(myData$PriceChange, myData$LoanPaymentsOverdue, xlab="Loan Payments Overdue",
+ylab="Price Change")
+abline(0.641,0.0112,col="red")
+myData<-read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW2/indicators.txt",header=TRUE)
+plot(myData$PriceChange, myData$LoanPaymentsOverdue, xlab="Loan Payments Overdue",
+ylab="Price Change")
+abline(0.641,0.0112,col="red")
+myData<-read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW2/indicators.txt",header=TRUE)
+plot(myData$PriceChange, myData$LoanPaymentsOverdue, xlab="Loan Payments Overdue",
+ylab="Price Change",main="Regression")
+abline(0.641,0.112,col="red")
+myData<-read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW2/indicators.txt",header=TRUE)
+plot(myData$LoanPaymentsOverdue,myData$PriceChange, xlab="Loan Payments Overdue",
+ylab="Price Change",main="Regression")
+abline(0.641,0.112,col="red")
+myData<-read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW2/indicators.txt",header=TRUE)
+plot(myData$LoanPaymentsOverdue,myData$PriceChange, xlab="Loan Payments Overdue",
+ylab="Price Change",main="Regression")
+abline(0.112,0.641,col="red")
+myData<-read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW2/indicators.txt",header=TRUE)
+plot(myData$LoanPaymentsOverdue,myData$PriceChange, xlab="Loan Payments Overdue",
+ylab="Price Change",main="Regression")
+abline(0.0112,0.641,col="red")
+myLinearModel<-lm(PriceChange~LoanPaymentsOverdue,data=myData)
+summary(myLinearModel)
+myData<-read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW2/indicators.txt",header=TRUE)
+plot(myData$LoanPaymentsOverdue,myData$PriceChange, xlab="Loan Payments Overdue",
+ylab="Price Change",main="Regression")
+abline(4.51,-2.24,col="red")
+library("pander", lib.loc="~/R/win-library/3.3")
+predict(myLinearModel,data.frame(Invoices=130),interval="prediction",level=0.95)
+predict(myLinearModel,data.frame(Invoices=130),interval="prediction",level=0.95)
+modelSummary<-summary(myLinearModel)
+modelCoeffs<-modelSummary$coefficients
+intercept<-modelCoeffs["(Intercept)","Estimate"]
+slope<-modelCoeffs["LoanPaymentsOverdue","Estimate"]
+predictedValue<-intercept+4*slope
+predictedValue
+myData<-read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW2/invoices.txt",header=TRUE)
+predict(myLinearModel,data.frame(Invoices=130),interval="prediction",level=0.95)
+predict(myLinearModel,data.frame(LoanPaymentsOverdue=4),interval="confidence",level=0.95)
+predict(myLinearModel,data.frame(Invoices=130),interval="prediction",level=0.95)
+#Please change the file path in the command below to coincide with where you have stored the data files
+setwd("F:\unr\4th sem\applied regression analysis\Assignments\HW4")
+cleaningwtd <- read.table("cleaningwtd.txt",header=TRUE)
+attach(cleaningwtd)
+setwd("F:\unr\4th sem\applied regression analysis\Assignments\HW4")
+cleaningwtd <- read.table("cleaningwtd.txt",header=TRUE)
+attach(cleaningwtd)
+setwd("F:/unr/4th sem/applied regression analysis/Assignments/HW4")
+cleaningwtd <- read.table("cleaningwtd.txt",header=TRUE)
+attach(cleaningwtd)
+#compute sample standard deviation at taeach value of Crews, AGS 4 march 2018
+library (dplyr)
+cleaningwtd %>% group_by(Crews) %>% mutate( sd_Rooms = sd(Rooms)) %>% as.data.frame
+#compute sample standard deviation at taeach value of Crews, AGS 4 march 2018
+library (dplyr)
+cleaningwtd %>% group_by(Crews) %>% mutate( sd_Rooms = sd(Rooms)) %>% as.data.frame

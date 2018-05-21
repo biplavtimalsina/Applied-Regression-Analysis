@@ -1,0 +1,323 @@
+---
+title: "Forest Fire"
+author: "Alena Lee,Sangam Shrestha"
+date: "May 15, 2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r}
+library(pander)
+library(car)
+library(leaps)
+fire<-read.csv("forestfires.csv",header=T)
+attach(fire)
+hist(X)
+hist(Y)
+hist(rain)
+hist(FFMC)
+hist(DMC)
+hist(DC)
+hist(ISI)
+hist(temp)
+hist(RH)
+hist(wind)
+area[area==0]<-0.00000001
+rain[rain==0]<-0.00000001
+FFMC[FFMC==0]<-0.00000001
+DC[DC==0]<-0.00000001
+ISI[ISI==0]<-0.00000001
+RH[RH==0]<-0.00000001
+lrain<-log(rain)
+lFFMC<-log(FFMC)
+lDC<-log(DC)
+lISI<-log(ISI)
+lRH<-log(RH)
+linearModel<-lm(log(area)~X+Y+lrain+month+day+lFFMC+DMC+lDC+lISI+temp+lRH+wind)
+summary(linearModel)
+X1 <- cbind(X,Y,lrain,month,day,lFFMC,DMC,lDC,lISI,temp,lRH,wind)
+
+significantValue <- regsubsets(as.matrix(X1),log(area),nvmax = 12)
+summaryValue <- summary(significantValue)
+summaryValue
+#Adjusted R-squared
+summaryValue$adjr2
+
+```
+
+
+
+
+Looking at the histogram plots we see that area and predictor variables rain, FFMC,DC,ISI, RH.
+Let us form the linear model with different number of predictors
+```{r}
+
+
+om1 <- lm(log(area)~lDC)
+om2 <- lm(log(area)~lDC+wind)
+om3 <- lm(log(area)~lDC+wind+X)
+om4 <- lm(log(area)~lDC+wind+X+lRH)
+om5 <- lm(log(area)~lDC+wind+X+lRH+Y)
+om6 <- lm(log(area)~lDC+wind+X+lRH+Y+day)
+om7 <- lm(log(area)~lDC+wind+X+Y+lFFMC+lISI+temp)
+om8 <- lm(log(area)~lDC+wind+X+Y+lFFMC+lISI+temp+day)
+om9 <- lm(log(area)~lDC+wind+X+Y+lFFMC+lISI+temp+day+DMC)
+om10 <- lm(log(area)~lDC+wind+X+Y+lFFMC+lISI+temp+day+DMC+month)
+om11 <- lm(log(area)~lDC+wind+X+Y+lFFMC+lISI+temp+day+DMC+month+lRH)
+om12 <- lm(log(area)~lDC+wind+X+Y+lFFMC+lISI+temp+day+DMC+month+lRH+lrain)
+```
+
+Now let us consider the subsets:
+```{r}
+#size=1
+n <- length(om1$residuals)
+npar <- length(om1$coefficients) +1
+#Calculate AIC
+extractAIC(om1,k=2)
+#Calculate AICc
+extractAIC(om1,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om1,k=log(n))
+#size=2
+npar <- length(om2$coefficients) +1
+#Calculate AIC
+extractAIC(om2,k=2)
+#AICc
+extractAIC(om2,k=2)+2*npar*(npar+1)/(n-npar-1)
+#BIC
+extractAIC(om2,k=log(n))
+#size=3
+npar <- length(om3$coefficients) +1
+#AIC
+extractAIC(om3,k=2)
+#AICc
+extractAIC(om3,k=2)+2*npar*(npar+1)/(n-npar-1)
+#BIC
+extractAIC(om3,k=log(n))
+
+#size=4
+npar <- length(om4$coefficients) +1
+#AIC
+extractAIC(om4,k=2)
+#AICc
+extractAIC(om4,k=2)+2*npar*(npar+1)/(n-npar-1)
+#BIC
+extractAIC(om4,k=log(n))
+#size=5
+npar <- length(om5$coefficients) +1
+#AIC
+extractAIC(om5,k=2)
+#AICc
+extractAIC(om5,k=2)+2*npar*(npar+1)/(n-npar-1)
+#BIC
+extractAIC(om5,k=log(n))
+
+#size=6
+npar <- length(om6$coefficients) +1
+#AIC
+extractAIC(om6,k=2)
+#AICc
+extractAIC(om6,k=2)+2*npar*(npar+1)/(n-npar-1)
+#BIC
+extractAIC(om6,k=log(n))
+
+#size=7
+npar <- length(om7$coefficients) +1
+#AIC
+extractAIC(om7,k=2)
+#AICc
+extractAIC(om7,k=2)+2*npar*(npar+1)/(n-npar-1)
+#BIC
+extractAIC(om7,k=log(n))
+
+#size=8
+npar <- length(om8$coefficients) +1
+#AIC
+extractAIC(om8,k=2)
+#AICc
+extractAIC(om8,k=2)+2*npar*(npar+1)/(n-npar-1)
+#BIC
+extractAIC(om8,k=log(n))
+
+#size=9
+npar <- length(om9$coefficients) +1
+#AIC
+extractAIC(om9,k=2)
+#AICc
+extractAIC(om9,k=2)+2*npar*(npar+1)/(n-npar-1)
+#BIC
+extractAIC(om9,k=log(n))
+
+#size=10
+npar <- length(om10$coefficients) +1
+#AIC
+extractAIC(om10,k=2)
+#AICc
+extractAIC(om10,k=2)+2*npar*(npar+1)/(n-npar-1)
+#BIC
+extractAIC(om10,k=log(n))
+
+#size=11
+npar <- length(om11$coefficients) +1
+#AIC
+extractAIC(om11,k=2)
+#AICc
+extractAIC(om11,k=2)+2*npar*(npar+1)/(n-npar-1)
+#BIC
+extractAIC(om11,k=log(n))
+
+#size=12
+npar <- length(om12$coefficients) +1
+#AIC
+extractAIC(om12,k=2)
+#AICc
+extractAIC(om12,k=2)+2*npar*(npar+1)/(n-npar-1)
+#BIC
+extractAIC(om12,k=log(n))
+```
+
+Arranging them in table we get,
+
+
+
+\hspace{-64pt}
+\begin{table}[ht]
+\centering
+\begin{tabular}{rllrrl}
+\hline
+SN& Predictors &${R^2}_{adj}$ & AIC & ${AIC}_C$ & BIC\\
+\hline
+1  & DC & 0.007905268 & 2398.462 & 2398.508968 & 2406.958\\
+2  & DC+wind & 0.012082605 & 2397.276 & 2397.353962 & 2410.02\\
+3  & DC+wind+X & 0.016147562 & 2396.729 & 2396.845938 & \textbf{2413.721}\\
+4  & DC+wind+X+RH & \textbf{0.020402422} & 2398.408 & 2398.572868 & 2419.648\\
+5  & DC+wind+X+RH+Y & 0.020713610 & \textbf{2399.813} & \textbf{2400.033502} & 2425.3029\\
+6  & DC+wind+X+RH+Y+day & 0.020450983 & 2410.371 & 2411.09468 & 2461.348\\
+7  & DC+wind+X+Y+FFMC+ISI+temp & 0.019774478 & 2402.262 & 2402.61665 & 2436.246\\
+8  & DC+wind+X+Y+FFMC+ISI+temp+day & 0.018743906 & 2412.85 & 2413.80857 & 2472.323\\
+9  & DC+wind+X+Y+FFMC+ISI+temp+day+DMC & 0.017406722 & 2414.772 & 2415.86010 & 2478.493\\
+10 & DC+wind+X+Y+FFMC+ISI+temp+day+DMC+month & 0.016356225 & 2417.947 & 2421.03916 & 2528.396\\
+11 & DC+wind+X+Y+FFMC+ISI+temp+day+DMC+month+RH & 0.014755089 & 2418.353 & 2421.68049 & 2533.05\\
+12 & DC+wind+X+Y+FFMC+ISI+temp+day+DMC+month+RH+rain & 0.012800249 & 2414.562 & 2418.1351 & 2533.507\\
+
+\hline
+\end{tabular}
+\end{table}
+
+
+Looking at the table where maximum value for ${R^2}_{adj}$ is selected and minimum value of AIC, AIC_c and BIC are selected. So we see there are two possible solutions with three predictor variable and five predictor variable.
+
+Now looking at the summary we have,
+
+```{r}
+summary(om3)
+summary(om4)
+summary(om5)
+```
+
+(b) Identify the optimal model or models based on AIC and BIC from the
+approach based on backward selection.
+
+**solution**
+Let us now see models based on AIC and BIC, 
+
+```{r}
+
+#Backward Elimination for AIC and BIC
+backAIC <- step(om12,direction="backward", data=fire)
+backBIC <- step(om12,direction="backward", data=fire, k=log(n))
+```
+Here, if we look Backward AIC, 3 predictor value gives us the least AIC and 1 predictor values gives us the least BIC. 
+
+
+So our model becomes,
+
+```{r}
+
+
+pairs(log(area)~lDC+wind+X,data=fire,cex.labels=1.4,main="Scatterplot matrix")
+
+om13 <- lm(log(area)~DC+ lDC+wind+X)
+
+hist(lDC)
+hist(wind)
+hist(X)
+
+
+par(mfrow=c(3,3))
+StanRes1 <- rstandard(linearModel)
+plot(lDC,StanRes1, ylab="Standardized Residuals")
+plot(wind,StanRes1, ylab="Standardized Residuals")
+plot(X,StanRes1, ylab="Standardized Residuals")
+# Diagnostic plots for the regression model
+par(mfrow=c(2,3))
+plot(om13,main="Diagnostic plot om13")
+plot(om13$fitted.values,log(area),ylab ="log(PrizeMoney)",xlab="Fitted Values")
+abline(lsfit(om13$fitted.values,log(area)))
+par(mfrow=c(1,2))
+
+
+par(mfrow=c(3,3))
+mmp(om13,lDC)
+mmp(om13,wind)
+mmp(om13,X)
+mmp(om13,linearModel$fitted.values,xlab="Fitted Values")
+
+
+avPlots(om13)
+```
+
+Let us create fake data and check if our code is implemented correctly.
+
+
+Our selected model is:
+$$log(area)=b0+ b1*log(DC)+b2*wind+b3*X$$
+
+
+```{r}
+
+summary(om13)
+```
+
+From summary we get the values for the coefficients.
+
+```{r}
+set.seed(400)
+n<-517
+b0<-18.5187
+b1<-1.2344
+b2<-0.4471
+b3<-0.3070
+
+
+
+error <- rnorm(n = nrow(fire), mean = 0, sd = 10)
+fire$fake_area<- b0+ b1*log(DC)+b2*wind+b3*X + error 
+fake_lm <- glm(formula = log(fake_area) ~ DC+lDC+wind+X, data = fire)
+
+```
+
+Now let us plot the mmp plots.
+
+```{r, fig.cap="The marginal model plots show good agreement, indicating a great fit."}
+summary(fake_lm)
+car::mmps(fake_lm,layout=c(1,2))
+```
+
+
+
+
+As we see that the marginal model plots show good agreement which indicates it is a great fit.
+
+
+
+
+
+
+
+

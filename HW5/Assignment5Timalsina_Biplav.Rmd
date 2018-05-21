@@ -1,0 +1,243 @@
+---
+title: "Assignment 5"
+author: "Biplav Timalsina"
+date: "April 01, 2018"
+output: "pdf_document"
+---
+  
+  
+  
+  \vspace{40pt}
+
+
+![](F:/unr/shift1.png)![](F:/unr/shift1.png)![](F:/unr/logo1.png)
+
+
+```{r setup, include=FALSE}
+library(knitr)
+opts_chunk$set(echo = TRUE)
+
+```
+
+
+\vspace{175pt}
+
+
+
+# \hspace{90pt} STAT 757 Applied Regression Analysis
+
+---
+  
+  \vspace{132pt}
+\vspace{10pt}
+\vspace{10pt}
+
+\vspace{10pt}
+\vspace{10pt}
+\vspace{5pt}
+
+
+
+
+![](F:/unr/c18.png)
+
+![](F:/unr/c19.png)
+
+![](F:/unr/c20.png)
+
+
+![](F:/unr/c21.png)
+
+![](F:/unr/c22.png)
+
+
+
+
+
+#(a) Show that the coefficient of the interaction term in model (5.10) is statistically significant. In other words, show that the rate of change in quality rating depends on whether there has been any unwanted rain at vintage.
+
+We can show that the coefficient of interaction term in model is statistically significant in following two ways:
+
+1) Run full model with interaction term as in model (5.10) as
+$Quality = {\beta_0}+{\beta_1}End of Harvest + {\beta_2}Rain +{\beta_3} End of Harvest * Rain$ 
+
+We can see that p value of interaction term is 0.0120 and is shown significant.
+
+2) Fit a reduced model as 
+$Quality = {\beta_0}+{\beta_1}End of Harvest + {\beta_2}Rain$
+
+If we run the analysis of variance to see if two models are significantly different. From ANOVA table, we observe the p-value to be 0.0203. This implies that the two models are significantly different. Hence, we can conclude that the coefficient of the interaction term in the full model is statistically significant. 
+
+#(b) Estimate the number of days of delay to the end of harvest it takes to decrease the quality rating by 1 point when there is:
+We know, change in quality/change in end of harvest= slope. 
+
+Since quality is decreased  by 1, therefore,
+
+$Numberofdays delayed = -1|slope$
+#(i)No unwanted rain at harvest
+If there is no unwanted rain at harvest, the value of Rain is 0. 
+And, then using the definition of slope that we have defined, no of days delayed = -1/(-0.03145) =31.48
+
+Therefore, it requires approximately 32 days to decrease the quality rating by 1 point when there is no unwanted rain at harvest.
+
+#(ii)Some unwanted rain at harvest 
+IF there is some unwanted rain at harvest, the value of rain is 1. The slope is additive here.
+From our definition earlier,  number of days required= -1/(-0.03145-0.08314)=8.72.
+
+Therefore, it requires approximately 8.7 days to decrease the quality rating by 1 point when there is some unwanted rain at harvest.
+
+## Project milestones [20 points]
+
+1. Perform an exploratory data analysis
+ * Numerically summarize the variables.
+ * Make plots and explore relationships between variables.
+ * Identify any strange points or anything else that doesn't make sense.
+2. Begin to think about how to model the relationships in your data.
+
+
+
+This is done as a team effort with Dhurba Neupane. 
+
+## Title: Nitrogen Rate, Nitrogen Source Effects on Camelina Genotypes in Semi-arid Region of Northern Nevada Irrigated with Reclaimed Waste Water.
+
+\vspace{10pt}
+
+
+We begin by performing exploratory analysis on our data. This would be helpful to form some prelimiary notion of relationship between variables. That way we can have idea about which variable contributes more to the y-output, and which variables doens't contribute much. This is very essential to fine tuning the final regression relationship.
+
+We first start with finding the structure of our data, minimum, maximum, mean value of different variables. This will help us to find if the scale of different variables are comparable.
+Then we perform correlation analysis and plot scatterplot. This will help us identify the relationships between different variables in pairs.
+
+Then we plot boxplot for certain numeric variables to have and idea of how they look, what is the range and the likes, figuratively.
+
+We then plot the yield with various independent variables to have an idea of different cases.
+
+\vspace{10pt}
+\vspace{10pt}
+
+```{r echo=FALSE}
+require(ggplot2)
+require(GGally)
+require(CCA)
+library(MASS)     # ... for Multivariate Normal Distribution
+library(car)   
+
+
+NS<-read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW5/Nstudy.csv",header = TRUE)
+attach(NS)
+
+
+summary(NS)
+
+```
+
+\vspace{10pt}
+\vspace{10pt}
+
+We now see the general structure of our data. For example: Seedyield has min value of 31.06, maximum of 2479.09; the variability is really high. The 1st quartile is 326.17, median is 652.72, mean is 757.5 and 3rd quartile is 1083.99.
+
+Similarly we can observe such statistics for Oilyield and BiodieselYield.
+
+Year, NSource, Block, Cultivar, Nrate, Treatment are all discrete variables with certain levels.
+
+\vspace{10pt}
+\vspace{10pt}
+
+
+```{r}
+newData<-NS[,c(2,3,8,9,10)]
+boxplot(newData[,3:5])
+
+```
+
+We can observe the box plot for the three different yield in the above figure. This will give us an idea of what the yield data looks like.
+In general, Seedyield is greater than Oilyeild is greater than BiodieselYield, which is correct to our notion.
+
+\vspace{10pt}
+\vspace{10pt}
+
+
+
+```{r}
+newData<-NS[,c(2,3,8,9,10)]
+
+cor(newData)
+
+#pairs(newData[,1:5])
+pairs(~Treatment+Block+Seedyield+Oilyield+Biodieselyield, data=newData,main="Simple Scatterplot Matrix")
+
+```
+
+From the corelation table, we see slightly negative corelation between treatment and block (but since this is in our control, we don't worry about it). Seedyield, Oilyield and Biodieselyield are highly correlated with each other.  Treatment has positive corelation with all three kinds of yields.  Block also has higher corelation with three different kinds of yields.
+
+\vspace{10pt}
+\vspace{10pt}
+
+
+From the scatterplot above,
+we can see that there is strong relationship between the three yields, Seedyield, Oilyield and Biodieselyeild which re-inforces our notion that yeild are related to each other positively. 
+If we compare treatment with the yield, we cannot see any definite pattern outright and that it may need to undergo some transformation.
+Comparing the yield for different blocks, we can see the average yeild for different blocks are roughly same. But, there is some variation in block 1 which has less yield most of the time, and block 4 has more higher yield compared to others. We might generate some findings that different blocks of treatment were able to generate different yield.
+Because other input variables were non-numeric, scatterplots couldn't be plotted. We should be able to convert them to some numeric units and then plot them to identify the relationships.
+
+\vspace{10pt}
+\vspace{10pt}
+
+```{r}
+
+
+par(mfrow=c(1,1))
+plot(NRate,Seedyield,ylab="Seedyield",xlab="Nitrogen Rates")
+
+```
+Comparing nitrogen rates with seedyield in the above BoxPlot, we can see that there is definitely some relationship between them. N120 and N80 cause more seedyeild compared to the counterparts N00 and N40.
+
+\vspace{10pt}
+\vspace{10pt}
+
+```{r}
+
+
+par(mfrow=c(1,1))
+plot(NSource,Seedyield,ylab="Seedyield",xlab="Nitrogen Sources")
+#plot(Cultivar,Seedyield,ylab="Seedyield",xlab="Camelina Genotypes")
+```
+It seems from above figure that the effect of Nitrogen Sources are almost similar on SeedYield.  There are some outliers in both sources. So, we might not include nitrogen sources in the final relationship.
+
+\vspace{10pt}
+\vspace{10pt}
+
+```{r}
+
+
+par(mfrow=c(1,1))
+plot(Cultivar,Seedyield,ylab="Seedyield",xlab="Camelina Genotypes")
+```
+ 
+ It seems that the genotypes also contribute some amount on the amount of seedyield. BlainCreek has comparatively more seedyield than Pronghorn. This should be used in the formula.
+
+\vspace{10pt}
+\vspace{10pt}
+
+
+
+```{r}
+mfull<-lm(formula=Seedyield~NRate+NSource+Cultivar+NRate:NSource+NRate:Cultivar+NSource:Cultivar+NRate:NSource:Cultivar)
+summary(mfull)
+mreduced<-lm(formula=Seedyield~NRate+NSource+Cultivar)
+summary(mreduced)
+anova(mreduced,mfull)
+
+
+detach(NS)
+```
+
+
+
+
+
+#(i)No unwanted rain at harvest
+
+
+
+

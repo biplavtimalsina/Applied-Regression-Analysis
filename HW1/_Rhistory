@@ -1,0 +1,512 @@
+I2<-c==2
+windows()
+plot(X[,1],X[,2],pch=19)
+points(X[I1,1],X[I1,2],col='red',pch=19)
+points(X[I2,1],X[I2,2],col='blue',pch=19)
+table(c,iris$Species)
+d<-dist(X,method='euclidean')
+h<-hclust(d,method='com')
+windows()
+plot(h,hang=-.01,xlab='',sub='',main='',label=iris$Species)
+c<-cutree(h,k=3)
+I1<-c==1
+I2<-c==2
+windows()
+plot(X[,1],X[,2],pch=19)
+points(X[I1,1],X[I1,2],col='red',pch=19)
+points(X[I2,1],X[I2,2],col='blue',pch=19)
+table(c,iris$Species)
+d<-dist(X,method='euclidean')
+h<-hclust(d,method='sin')
+windows()
+plot(h,hang=-.01,xlab='',sub='',main='',label=iris$Species)
+c<-cutree(h,k=3)
+I1<-c==1
+I2<-c==2
+windows()
+plot(X[,1],X[,2],pch=19)
+points(X[I1,1],X[I1,2],col='red',pch=19)
+points(X[I2,1],X[I2,2],col='blue',pch=19)
+table(c,iris$Species)
+#euclidean single
+d<-dist(X,method='euclidean')
+h<-hclust(d,method='sin')
+windows()
+plot(h,hang=-.01,xlab='',sub='',main='',label=iris$Species)
+c<-cutree(h,k=3)
+I1<-c==1
+I2<-c==2
+windows()
+plot(X[,1],X[,2],pch=19)
+points(X[I1,1],X[I1,2],col='red',pch=19)
+points(X[I2,1],X[I2,2],col='blue',pch=19)
+table(c,iris$Species)
+d<-dist(X,method='euclidean')
+h<-hclust(d,method='com')
+windows()
+plot(h,hang=-.01,xlab='',sub='',main='',label=iris$Species)
+c<-cutree(h,k=3)
+I1<-c==1
+I2<-c==2
+windows()
+plot(X[,1],X[,2],pch=19)
+points(X[I1,1],X[I1,2],col='red',pch=19)
+points(X[I2,1],X[I2,2],col='blue',pch=19)
+table(c,iris$Species)
+d<-dist(X,method='euclidean')
+h<-hclust(d,method='ave')
+windows()
+plot(h,hang=-.01,xlab='',sub='',main='',label=iris$Species)
+c<-cutree(h,k=3)
+I1<-c==1
+I2<-c==2
+windows()
+plot(X[,1],X[,2],pch=19)
+points(X[I1,1],X[I1,2],col='red',pch=19)
+points(X[I2,1],X[I2,2],col='blue',pch=19)
+table(c,iris$Species)
+q()
+head(cars)
+head(cars)
+plot(cars)
+x<-c(1,2,3)
+y<-c(2,4,5)
+plot (x,y)
+knitr::opts_chunk$set(echo = TRUE)
+summary(cars)
+plot(pressure)
+kicker <- read.csv("~/OneDrive - University of Nevada, Reno/Teaching/STAT_757/Sheather_data/Data/FieldGoals2003to2006.csv",header=T) ## adjust this as needed.
+kicker <- read.csv("F:\unr\4th sem\applied regression analysis\Assignments\HW1\FieldGoals2003to2006.csv",header=T) ## adjust this as needed.
+kicker <- read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW1/FieldGoals2003to2006.csv",header=T) ## adjust this as needed.
+## Sorry this line is too long, the data are labeled 'FieldGoals2003to2006.csv'
+attach(kicker) ## THIS IS NOT USUALLY RECOMMENDED, ASK ME IN CLASS WHY NOT.
+#Figure 1.1 on page 2
+plot(kicker$FGtM1,kicker$FGt,
+main="Unadjusted Correlation = -0.139",
+xlab="Field Goal Percentage in Year t-1",ylab="Field Goal Percentage in Year t")
+#p-values on page 3
+fit.1 <- lm(FGt~FGtM1 +Name +FGtM1:Name,data=kicker)
+anova(fit.1)
+#slope and interecepts of lines in Figure 1.2 on page 3
+fit.2 <- lm(FGt ~ Name + FGtM1,data=kicker)
+fit.2
+#Figure 1.2 on page 3
+plot(kicker$FGtM1,kicker$FGt,
+main="Slope of each line = -0.504",
+xlab="Field Goal Percentage in Year t-1",
+ylab="Field Goal Percentage in Year t")
+tt <- seq(60,100,length=1001)
+slope.piece <- summary(fit.2)$coef[20]*tt
+lines(tt,summary(fit.2)$coef[1]+slope.piece,lty=2)
+for (i in 2:19)
+{lines(tt,summary(fit.2)$coef[1]+summary(fit.2)$coef[i]+slope.piece,lty=2)}
+detach(kicker)
+nyc <- read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW1/nyc.csv",header=TRUE)
+attach(nyc)
+#Figure 1.5 on page 7
+pairs(Price~Food+Decor+Service,data=nyc,gap=0.4,
+cex.labels=1.5)
+#Figure 1.6 on page 10
+boxplot(Price~East,ylab="Price",
+xlab="East (1 = East of Fifth Avenue)")
+detach(nyc)
+Bordeaux <- read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW1/Bordeaux.csv", header=TRUE)
+attach(Bordeaux)
+#Figure 1.7 on page 10
+pairs(Price~ParkerPoints+CoatesPoints,data=Bordeaux,gap=0.4,cex.labels=1.5)
+#Figure 1.8 on page 11
+par(mfrow=c(2,3))
+boxplot(Price~P95andAbove,ylab="Price",xlab="P95andAbove")
+boxplot(Price~FirstGrowth,ylab="Price",xlab="First Growth")
+boxplot(Price~CultWine,ylab="Price",xlab="Cult Wine")
+boxplot(Price~Pomerol,ylab="Price",xlab="Pomerol")
+boxplot(Price~VintageSuperstar,ylab="Price",xlab="Vintage Superstar")
+#Figure 1.9 on page 12
+par(mfrow=c(1,1))
+pairs(log(Price)~log(ParkerPoints)+log(CoatesPoints),data=Bordeaux,gap=0.4,cex.labels=1.5)
+#Figure 1.10 on page 13
+par(mfrow=c(2,3))
+boxplot(log(Price)~P95andAbove,ylab="log(Price)",
+xlab="P95andAbove")
+boxplot(log(Price)~FirstGrowth,ylab="log(Price)",
+xlab="First Growth")
+boxplot(log(Price)~CultWine,ylab="log(Price)",
+xlab="Cult Wine")
+boxplot(log(Price)~Pomerol,ylab="log(Price)",
+xlab="Pomerol")
+boxplot(log(Price)~VintageSuperstar,ylab="log(Price)",
+xlab="Vintage Superstar")
+detach(Bordeaux)
+set.seed(5)
+x<-rnorm(100,mean=0,sd=100)
+summary(x)
+plot(x)
+set.seed=10
+var_beta<-rbeta(1000,2,2)
+summary(var_beta)
+plot(var_beta)
+set.seed=15
+var_bino<-rbino(10000,10,0.2)
+set.seed=15
+var_bino<-rbinom(10000,10,0.2)
+summary(var_bino)
+plot(var_bino)
+summary(var_beta)
+kicker <- read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW1/FieldGoals2003to2006.csv",header=T) ## adjust this as needed.
+## Sorry this line is too long, the data are labeled 'FieldGoals2003to2006.csv'
+attach(kicker) ## THIS IS NOT USUALLY RECOMMENDED, ASK ME IN CLASS WHY NOT.
+#Figure 1.1 on page 2
+plot(kicker$FGtM1,kicker$FGt,
+main="Unadjusted Correlation = -0.139",
+xlab="Field Goal Percentage in Year t-1",ylab="Field Goal Percentage in Year t")
+#p-values on page 3
+fit.1 <- lm(FGt~FGtM1 +Name +FGtM1:Name,data=kicker)
+anova(fit.1)
+#slope and interecepts of lines in Figure 1.2 on page 3
+fit.2 <- lm(FGt ~ Name + FGtM1,data=kicker)
+fit.2
+#Figure 1.2 on page 3
+plot(kicker$FGtM1,kicker$FGt,
+main="Slope of each line = -0.504",
+xlab="Field Goal Percentage in Year t-1",
+ylab="Field Goal Percentage in Year t")
+tt <- seq(60,100,length=1001)
+slope.piece <- summary(fit.2)$coef[20]*tt
+lines(tt,summary(fit.2)$coef[1]+slope.piece,lty=2)
+for (i in 2:19)
+{lines(tt,summary(fit.2)$coef[1]+summary(fit.2)$coef[i]+slope.piece,lty=2)}
+detach(kicker)
+circulation <- read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW1/circulation.txt", header=TRUE, sep="\t")
+attach(circulation)
+#Figure 1.3 on page 5
+plot(Weekday,Sunday,xlab="Weekday Circulation",ylab="Sunday Circulation",
+pch=Tabloid.with.a.Serious.Competitor+1,col=Tabloid.with.a.Serious.Competitor+1)
+legend(110000, 1600000,legend=c("0","1"),
+pch=1:2,col=1:2,title="Tabloid dummy variable")
+#Figure 1.4 on page 5
+plot(log(Weekday),log(Sunday),xlab="log(Weekday Circulation)",ylab="log(Sunday Circulation)",
+pch=Tabloid.with.a.Serious.Competitor+1,
+col=Tabloid.with.a.Serious.Competitor+1)
+legend(11.6, 14.1,legend=c("0","1"),pch=1:2,col=1:2,
+title="Tabloid dummy variable")
+detach(circulation)
+nyc <- read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW1/nyc.csv",header=TRUE)
+attach(nyc)
+#Figure 1.5 on page 7
+pairs(Price~Food+Decor+Service,data=nyc,gap=0.4,
+cex.labels=1.5)
+#Figure 1.6 on page 10
+boxplot(Price~East,ylab="Price",
+xlab="East (1 = East of Fifth Avenue)")
+detach(nyc)
+Bordeaux <- read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW1/Bordeaux.csv", header=TRUE)
+attach(Bordeaux)
+#Figure 1.7 on page 10
+pairs(Price~ParkerPoints+CoatesPoints,data=Bordeaux,gap=0.4,cex.labels=1.5)
+#Figure 1.8 on page 11
+par(mfrow=c(2,3))
+boxplot(Price~P95andAbove,ylab="Price",xlab="P95andAbove")
+boxplot(Price~FirstGrowth,ylab="Price",xlab="First Growth")
+boxplot(Price~CultWine,ylab="Price",xlab="Cult Wine")
+boxplot(Price~Pomerol,ylab="Price",xlab="Pomerol")
+boxplot(Price~VintageSuperstar,ylab="Price",xlab="Vintage Superstar")
+#Figure 1.9 on page 12
+par(mfrow=c(1,1))
+pairs(log(Price)~log(ParkerPoints)+log(CoatesPoints),data=Bordeaux,gap=0.4,cex.labels=1.5)
+#Figure 1.10 on page 13
+par(mfrow=c(2,3))
+boxplot(log(Price)~P95andAbove,ylab="log(Price)",
+xlab="P95andAbove")
+boxplot(log(Price)~FirstGrowth,ylab="log(Price)",
+xlab="First Growth")
+boxplot(log(Price)~CultWine,ylab="log(Price)",
+xlab="Cult Wine")
+boxplot(log(Price)~Pomerol,ylab="log(Price)",
+xlab="Pomerol")
+boxplot(log(Price)~VintageSuperstar,ylab="log(Price)",
+xlab="Vintage Superstar")
+detach(Bordeaux)
+set.seed(5)
+x<-rnorm(100,mean=0,sd=100)
+summary(x)
+plot(x)
+knitr::opts_chunk$set(echo = TRUE)
+set.seed(5)
+x<-rnorm(100,mean=0,sd=100)
+summary(x)
+plot(x)
+library("pander", lib.loc="~/R/win-library/3.3")
+Pandoc.convert(f="STAT_757_Assignment1.Rmd", format="pdf", options="-S")
+setwd("F:/unr/4th sem/applied regression analysis/Assignments/HW1")
+Pandoc.convert(f="STAT_757_Assignment1.Rmd", format="pdf", options="-S")
+Pandoc.convert(f="STAT_757_Assignment1.Rmd", format="pdf")
+Pandoc.convert(f="assgin1.Rmd", format="pdf",options="-S")
+Pandoc.convert(f="assgin1.utf8.md", format="pdf",options="-S")
+Pandoc.convert(f="assgin1.knit.md", format="pdf",options="-S")
+library(knitr)
+opts_chunk$set(echo = TRUE)
+kicker <- read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW1/FieldGoals2003to2006.csv",header=T) ## adjust this as needed.
+## Sorry this line is too long, the data are labeled 'FieldGoals2003to2006.csv'
+attach(kicker) ## THIS IS NOT USUALLY RECOMMENDED, ASK ME IN CLASS WHY NOT.
+#Figure 1.1 on page 2
+plot(kicker$FGtM1,kicker$FGt,
+main="Unadjusted Correlation = -0.139",
+xlab="Field Goal Percentage in Year t-1",ylab="Field Goal Percentage in Year t")
+#p-values on page 3
+fit.1 <- lm(FGt~FGtM1 +Name +FGtM1:Name,data=kicker)
+anova(fit.1)
+#slope and interecepts of lines in Figure 1.2 on page 3
+fit.2 <- lm(FGt ~ Name + FGtM1,data=kicker)
+fit.2
+#Figure 1.2 on page 3
+plot(kicker$FGtM1,kicker$FGt,
+main="Slope of each line = -0.504",
+xlab="Field Goal Percentage in Year t-1",
+ylab="Field Goal Percentage in Year t")
+tt <- seq(60,100,length=1001)
+slope.piece <- summary(fit.2)$coef[20]*tt
+lines(tt,summary(fit.2)$coef[1]+slope.piece,lty=2)
+for (i in 2:19)
+{lines(tt,summary(fit.2)$coef[1]+summary(fit.2)$coef[i]+slope.piece,lty=2)}
+detach(kicker)
+circulation <- read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW1/circulation.txt", header=TRUE, sep="\t")
+attach(circulation)
+#Figure 1.3 on page 5
+plot(Weekday,Sunday,xlab="Weekday Circulation",ylab="Sunday Circulation",
+pch=Tabloid.with.a.Serious.Competitor+1,col=Tabloid.with.a.Serious.Competitor+1)
+legend(110000, 1600000,legend=c("0","1"),
+pch=1:2,col=1:2,title="Tabloid dummy variable")
+#Figure 1.4 on page 5
+plot(log(Weekday),log(Sunday),xlab="log(Weekday Circulation)",ylab="log(Sunday Circulation)",
+pch=Tabloid.with.a.Serious.Competitor+1,
+col=Tabloid.with.a.Serious.Competitor+1)
+legend(11.6, 14.1,legend=c("0","1"),pch=1:2,col=1:2,
+title="Tabloid dummy variable")
+detach(circulation)
+nyc <- read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW1/nyc.csv",header=TRUE)
+attach(nyc)
+#Figure 1.5 on page 7
+pairs(Price~Food+Decor+Service,data=nyc,gap=0.4,
+cex.labels=1.5)
+#Figure 1.6 on page 10
+boxplot(Price~East,ylab="Price",
+xlab="East (1 = East of Fifth Avenue)")
+detach(nyc)
+Bordeaux <- read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW1/Bordeaux.csv", header=TRUE)
+attach(Bordeaux)
+#Figure 1.7 on page 10
+pairs(Price~ParkerPoints+CoatesPoints,data=Bordeaux,gap=0.4,cex.labels=1.5)
+#Figure 1.8 on page 11
+par(mfrow=c(2,3))
+boxplot(Price~P95andAbove,ylab="Price",xlab="P95andAbove")
+boxplot(Price~FirstGrowth,ylab="Price",xlab="First Growth")
+boxplot(Price~CultWine,ylab="Price",xlab="Cult Wine")
+boxplot(Price~Pomerol,ylab="Price",xlab="Pomerol")
+boxplot(Price~VintageSuperstar,ylab="Price",xlab="Vintage Superstar")
+#Figure 1.9 on page 12
+par(mfrow=c(1,1))
+pairs(log(Price)~log(ParkerPoints)+log(CoatesPoints),data=Bordeaux,gap=0.4,cex.labels=1.5)
+#Figure 1.10 on page 13
+par(mfrow=c(2,3))
+boxplot(log(Price)~P95andAbove,ylab="log(Price)",
+xlab="P95andAbove")
+boxplot(log(Price)~FirstGrowth,ylab="log(Price)",
+xlab="First Growth")
+boxplot(log(Price)~CultWine,ylab="log(Price)",
+xlab="Cult Wine")
+boxplot(log(Price)~Pomerol,ylab="log(Price)",
+xlab="Pomerol")
+boxplot(log(Price)~VintageSuperstar,ylab="log(Price)",
+xlab="Vintage Superstar")
+detach(Bordeaux)
+set.seed(5)
+x<-rnorm(100,mean=0,sd=100)
+summary(x)
+plot(x)
+set.seed=10
+var_beta<-rbeta(1000,2,2)
+summary(var_beta)
+plot(var_beta)
+set.seed=15
+var_bino<-rbinom(10000,10,0.2)
+summary(var_bino)
+plot(var_bino)
+source('~/.active-rstudio-document', encoding = 'UTF-8', echo=TRUE)
+View(ellipse)
+knitr::opts_chunk$set(echo = TRUE)
+summary(cars)
+plot(pressure)
+kicker <- read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW1/FieldGoals2003to2006.csv",header=T) ## adjust this as needed.
+## Sorry this line is too long, the data are labeled 'FieldGoals2003to2006.csv'
+attach(kicker) ## THIS IS NOT USUALLY RECOMMENDED, ASK ME IN CLASS WHY NOT.
+#Figure 1.1 on page 2
+plot(kicker$FGtM1,kicker$FGt,
+main="Unadjusted Correlation = -0.139",
+xlab="Field Goal Percentage in Year t-1",ylab="Field Goal Percentage in Year t")
+#p-values on page 3
+fit.1 <- lm(FGt~FGtM1 +Name +FGtM1:Name,data=kicker)
+anova(fit.1)
+#slope and interecepts of lines in Figure 1.2 on page 3
+fit.2 <- lm(FGt ~ Name + FGtM1,data=kicker)
+fit.2
+#Figure 1.2 on page 3
+plot(kicker$FGtM1,kicker$FGt,
+main="Slope of each line = -0.504",
+xlab="Field Goal Percentage in Year t-1",
+ylab="Field Goal Percentage in Year t")
+tt <- seq(60,100,length=1001)
+slope.piece <- summary(fit.2)$coef[20]*tt
+lines(tt,summary(fit.2)$coef[1]+slope.piece,lty=2)
+for (i in 2:19)
+{lines(tt,summary(fit.2)$coef[1]+summary(fit.2)$coef[i]+slope.piece,lty=2)}
+detach(kicker)
+circulation <- read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW1/circulation.txt", header=TRUE, sep="\t")
+attach(circulation)
+#Figure 1.3 on page 5
+plot(Weekday,Sunday,xlab="Weekday Circulation",ylab="Sunday Circulation",
+pch=Tabloid.with.a.Serious.Competitor+1,col=Tabloid.with.a.Serious.Competitor+1)
+legend(110000, 1600000,legend=c("0","1"),
+pch=1:2,col=1:2,title="Tabloid dummy variable")
+#Figure 1.4 on page 5
+plot(log(Weekday),log(Sunday),xlab="log(Weekday Circulation)",ylab="log(Sunday Circulation)",
+pch=Tabloid.with.a.Serious.Competitor+1,
+col=Tabloid.with.a.Serious.Competitor+1)
+legend(11.6, 14.1,legend=c("0","1"),pch=1:2,col=1:2,
+title="Tabloid dummy variable")
+detach(circulation)
+nyc <- read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW1/nyc.csv",header=TRUE)
+attach(nyc)
+#Figure 1.5 on page 7
+pairs(Price~Food+Decor+Service,data=nyc,gap=0.4,
+cex.labels=1.5)
+#Figure 1.6 on page 10
+boxplot(Price~East,ylab="Price",
+xlab="East (1 = East of Fifth Avenue)")
+detach(nyc)
+Bordeaux <- read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW1/Bordeaux.csv", header=TRUE)
+attach(Bordeaux)
+#Figure 1.7 on page 10
+pairs(Price~ParkerPoints+CoatesPoints,data=Bordeaux,gap=0.4,cex.labels=1.5)
+#Figure 1.8 on page 11
+par(mfrow=c(2,3))
+boxplot(Price~P95andAbove,ylab="Price",xlab="P95andAbove")
+boxplot(Price~FirstGrowth,ylab="Price",xlab="First Growth")
+boxplot(Price~CultWine,ylab="Price",xlab="Cult Wine")
+boxplot(Price~Pomerol,ylab="Price",xlab="Pomerol")
+boxplot(Price~VintageSuperstar,ylab="Price",xlab="Vintage Superstar")
+#Figure 1.9 on page 12
+par(mfrow=c(1,1))
+pairs(log(Price)~log(ParkerPoints)+log(CoatesPoints),data=Bordeaux,gap=0.4,cex.labels=1.5)
+#Figure 1.10 on page 13
+par(mfrow=c(2,3))
+boxplot(log(Price)~P95andAbove,ylab="log(Price)",
+xlab="P95andAbove")
+boxplot(log(Price)~FirstGrowth,ylab="log(Price)",
+xlab="First Growth")
+boxplot(log(Price)~CultWine,ylab="log(Price)",
+xlab="Cult Wine")
+boxplot(log(Price)~Pomerol,ylab="log(Price)",
+xlab="Pomerol")
+boxplot(log(Price)~VintageSuperstar,ylab="log(Price)",
+xlab="Vintage Superstar")
+detach(Bordeaux)
+set.seed(5)
+x<-rnorm(100,mean=0,sd=100)
+summary(x)
+plot(x)
+set.seed=10
+var_beta<-rbeta(1000,2,2)
+summary(var_beta)
+plot(var_beta)
+set.seed=15
+var_bino<-rbinom(10000,10,0.2)
+summary(var_bino)
+plot(var_bino)
+library(knitr)
+opts_chunk$set(echo = TRUE)
+kicker <- read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW1/FieldGoals2003to2006.csv",header=T) ## adjust this as needed.
+## Sorry this line is too long, the data are labeled 'FieldGoals2003to2006.csv'
+attach(kicker) ## THIS IS NOT USUALLY RECOMMENDED, ASK ME IN CLASS WHY NOT.
+#Figure 1.1 on page 2
+plot(kicker$FGtM1,kicker$FGt,
+main="Unadjusted Correlation = -0.139",
+xlab="Field Goal Percentage in Year t-1",ylab="Field Goal Percentage in Year t")
+#p-values on page 3
+fit.1 <- lm(FGt~FGtM1 +Name +FGtM1:Name,data=kicker)
+anova(fit.1)
+#slope and interecepts of lines in Figure 1.2 on page 3
+fit.2 <- lm(FGt ~ Name + FGtM1,data=kicker)
+fit.2
+#Figure 1.2 on page 3
+plot(kicker$FGtM1,kicker$FGt,
+main="Slope of each line = -0.504",
+xlab="Field Goal Percentage in Year t-1",
+ylab="Field Goal Percentage in Year t")
+tt <- seq(60,100,length=1001)
+slope.piece <- summary(fit.2)$coef[20]*tt
+lines(tt,summary(fit.2)$coef[1]+slope.piece,lty=2)
+for (i in 2:19)
+{lines(tt,summary(fit.2)$coef[1]+summary(fit.2)$coef[i]+slope.piece,lty=2)}
+detach(kicker)
+circulation <- read.table("F:/unr/4th sem/applied regression analysis/Assignments/HW1/circulation.txt", header=TRUE, sep="\t")
+attach(circulation)
+#Figure 1.3 on page 5
+plot(Weekday,Sunday,xlab="Weekday Circulation",ylab="Sunday Circulation",
+pch=Tabloid.with.a.Serious.Competitor+1,col=Tabloid.with.a.Serious.Competitor+1)
+legend(110000, 1600000,legend=c("0","1"),
+pch=1:2,col=1:2,title="Tabloid dummy variable")
+#Figure 1.4 on page 5
+plot(log(Weekday),log(Sunday),xlab="log(Weekday Circulation)",ylab="log(Sunday Circulation)",
+pch=Tabloid.with.a.Serious.Competitor+1,
+col=Tabloid.with.a.Serious.Competitor+1)
+legend(11.6, 14.1,legend=c("0","1"),pch=1:2,col=1:2,
+title="Tabloid dummy variable")
+detach(circulation)
+nyc <- read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW1/nyc.csv",header=TRUE)
+attach(nyc)
+#Figure 1.5 on page 7
+pairs(Price~Food+Decor+Service,data=nyc,gap=0.4,
+cex.labels=1.5)
+#Figure 1.6 on page 10
+boxplot(Price~East,ylab="Price",
+xlab="East (1 = East of Fifth Avenue)")
+detach(nyc)
+Bordeaux <- read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW1/Bordeaux.csv", header=TRUE)
+attach(Bordeaux)
+#Figure 1.7 on page 10
+pairs(Price~ParkerPoints+CoatesPoints,data=Bordeaux,gap=0.4,cex.labels=1.5)
+#Figure 1.8 on page 11
+par(mfrow=c(2,3))
+boxplot(Price~P95andAbove,ylab="Price",xlab="P95andAbove")
+boxplot(Price~FirstGrowth,ylab="Price",xlab="First Growth")
+boxplot(Price~CultWine,ylab="Price",xlab="Cult Wine")
+boxplot(Price~Pomerol,ylab="Price",xlab="Pomerol")
+boxplot(Price~VintageSuperstar,ylab="Price",xlab="Vintage Superstar")
+#Figure 1.9 on page 12
+par(mfrow=c(1,1))
+pairs(log(Price)~log(ParkerPoints)+log(CoatesPoints),data=Bordeaux,gap=0.4,cex.labels=1.5)
+#Figure 1.10 on page 13
+par(mfrow=c(2,3))
+boxplot(log(Price)~P95andAbove,ylab="log(Price)",
+xlab="P95andAbove")
+boxplot(log(Price)~FirstGrowth,ylab="log(Price)",
+xlab="First Growth")
+boxplot(log(Price)~CultWine,ylab="log(Price)",
+xlab="Cult Wine")
+boxplot(log(Price)~Pomerol,ylab="log(Price)",
+xlab="Pomerol")
+boxplot(log(Price)~VintageSuperstar,ylab="log(Price)",
+xlab="Vintage Superstar")
+detach(Bordeaux)
+set.seed(5)
+x<-rnorm(100,mean=0,sd=100)
+summary(x)
+plot(x)
+set.seed=10
+var_beta<-rbeta(1000,2,2)
+summary(var_beta)
+plot(var_beta)
+set.seed=15
+var_bino<-rbinom(10000,10,0.2)
+summary(var_bino)
+plot(var_bino)

@@ -1,0 +1,512 @@
+par(mfrow=c(1,1))
+plot(BILL[residential==1],LATE[residential==1],pch=25,col="Blue",ylab="LATE",xlab = "BILL",ylim=c(0,100))
+points(BILL[residential==0],LATE[residential==0],pch=25,col="green")
+par(mfrow=c(1,1))
+plot(BILL[residential==1],LATE[residential==1],pch='r',col="Blue",ylab="LATE",xlab = "BILL",ylim=c(0,100))
+points(BILL[residential==0],LATE[residential==0],pch='c',col="green")
+<-lm(LATE~BILL + residential + residential:BILL)
+m1<-lm(LATE~BILL + residential + residential:BILL)
+summary(m1)
+Overdue
+m1<-lm(LATE~BILL + residential + residential:BILL)
+summary(m1)
+detach(Overdue)
+Overdue<-read.table('F:/unr/4th sem/applied regression analysis/Assignments/Final Exam/overdue.txt',header=T)
+attach(Overdue)
+Overdue$TYPE<-factor(c(rep(0,48),rep(1,48)),labels=c("Residential","Commercial"))
+attach(Overdue)
+par(mfrow=c(1,1))
+plot(BILL[TYPE=="Residential"],LATE[TYPE=="Residential"],pch="R",col="Blue",ylab="LATE",xlab = "BILL",ylim=c(0,100))
+points(BILL[TYPE=="Commercial"],LATE[TYPE=="Commercial"],pch="C",col="red")
+m1<-lm(LATE~BILL + residential + residential:BILL)
+m1<-lm(LATE~BILL + TYPE + TYPE:BILL)
+summary(m1)
+detach(Overdue)
+Overdue
+Overdue<-read.table('F:/unr/4th sem/applied regression analysis/Assignments/Final Exam/overdue.txt',header=T)
+attach(Overdue)
+Overdue$TYPE<-factor(c(rep(0,48),rep(1,48)),labels=c("Commercial","Residential"))
+attach(Overdue)
+par(mfrow=c(1,1))
+plot(BILL[TYPE=="Residential"],LATE[TYPE=="Residential"],pch="R",col="Blue",ylab="LATE",xlab = "BILL",ylim=c(0,100))
+points(BILL[TYPE=="Commercial"],LATE[TYPE=="Commercial"],pch="C",col="red")
+OVerdue
+Overdue
+Overdue<-read.table('F:/unr/4th sem/applied regression analysis/Assignments/Final Exam/overdue.txt',header=T)
+attach(Overdue)
+Overdue$TYPE<-factor(c(rep(1,48),rep(0,48)),labels=c("Commercial","Residential"))
+attach(Overdue)
+par(mfrow=c(1,1))
+plot(BILL[TYPE=="Residential"],LATE[TYPE=="Residential"],pch="R",col="Blue",ylab="LATE",xlab = "BILL",ylim=c(0,100))
+points(BILL[TYPE=="Commercial"],LATE[TYPE=="Commercial"],pch="C",col="red")
+Overdue
+detach(Overdue)
+m1<-lm(LATE~BILL + TYPE + TYPE:BILL)
+summary(m1)
+detach(Overdue)
+Overdue<-read.table('F:/unr/4th sem/applied regression analysis/Assignments/Final Exam/overdue.txt',header=T)
+attach(Overdue)
+Overdue$TYPE<-factor(c(rep(1,48),rep(0,48)),labels=c("Commercial","Residential"))
+attach(Overdue)
+par(mfrow=c(1,1))
+plot(BILL[TYPE=="Residential"],LATE[TYPE=="Residential"],pch="R",col="Blue",ylab="LATE",xlab = "BILL",ylim=c(0,100))
+points(BILL[TYPE=="Commercial"],LATE[TYPE=="Commercial"],pch="C",col="red")
+m1<-lm(LATE~BILL + TYPE + TYPE:BILL)
+summary(m1)
+detach(Overdue)
+Overdue
+Overdue<-read.table('F:/unr/4th sem/applied regression analysis/Assignments/Final Exam/overdue.txt',header=T)
+attach(Overdue)
+Overdue$TYPE<-factor(c(rep(1,48),rep(0,48)))#,labels=c("Commercial","Residential"))
+attach(Overdue)
+par(mfrow=c(1,1))
+plot(BILL[TYPE=="Residential"],LATE[TYPE=="Residential"],pch="R",col="Blue",ylab="LATE",xlab = "BILL",ylim=c(0,100))
+Overdue<-read.table('F:/unr/4th sem/applied regression analysis/Assignments/Final Exam/overdue.txt',header=T)
+attach(Overdue)
+Overdue$TYPE<-factor(c(rep(1,48),rep(0,48))),labels=c("Commercial","Residential"))
+Overdue<-read.table('F:/unr/4th sem/applied regression analysis/Assignments/Final Exam/overdue.txt',header=T)
+attach(Overdue)
+Overdue$TYPE<-factor(c(rep(1,48),rep(0,48),labels=c("Commercial","Residential"))
+attach(Overdue)
+c(rep(1,48),rep(0,48))
+Overdue<-read.table('F:/unr/4th sem/applied regression analysis/Assignments/Final Exam/overdue.txt',header=T)
+attach(Overdue)
+Overdue$TYPE<-factor(c(rep(1,48),rep(0,48),labels=c("Commercial","Residential"))
+attach(Overdue)
+Overdue<-read.table('F:/unr/4th sem/applied regression analysis/Assignments/Final Exam/overdue.txt',header=T)
+attach(Overdue)
+Overdue$TYPE<-factor(c(rep(1,48),rep(0,48)),labels=c("Commercial","Residential"))
+attach(Overdue)
+par(mfrow=c(1,1))
+plot(BILL[TYPE=="Residential"],LATE[TYPE=="Residential"],pch="R",col="Blue",ylab="LATE",xlab = "BILL",ylim=c(0,100))
+points(BILL[TYPE=="Commercial"],LATE[TYPE=="Commercial"],pch="C",col="red")
+m1<-lm(LATE~BILL + TYPE + TYPE:BILL)
+summary(m1)
+detach(Overdue)
+par(mfrow=c(1,1))
+plot(BILL[0:48],LATE[0:48])
+plot(BILL[TYPE=="Residential"],LATE[TYPE=="Residential"],pch="R",col="Blue",ylab="LATE",xlab = "BILL",ylim=c(0,100))
+par(mfrow=c(1,1))
+plot(BILL[TYPE=="Residential"],LATE[TYPE=="Residential"],pch="R",col="Blue",ylab="LATE",xlab = "BILL",ylim=c(0,100))
+par(mfrow=c(1,1))
+plot(BILL[TYPE=="Residential"],LATE[TYPE=="Residential"],pch="R",col="Blue",ylab="LATE",xlab = "BILL",ylim=c(0,100))
+```{r,echo=FALSE}
+Overdue<-read.table('F:/unr/4th sem/applied regression analysis/Assignments/Final Exam/overdue.txt',header=T)
+attach(Overdue)
+Overdue$TYPE<-factor(c(rep(1,48),rep(0,48)),labels=c("Commercial","Residential"))
+attach(Overdue)
+#par(mfrow=c(1,1))
+#plot(BILL[0:48],LATE[0:48])
+par(mfrow=c(1,1))
+plot(BILL[TYPE=="Residential"],LATE[TYPE=="Residential"],pch="R",col="Blue",ylab="LATE",xlab = "BILL",ylim=c(0,100))
+points(BILL[TYPE=="Commercial"],LATE[TYPE=="Commercial"],pch="C",col="red")
+Overdue<-read.table('F:/unr/4th sem/applied regression analysis/Assignments/Final Exam/overdue.txt',header=T)
+attach(Overdue)
+Overdue$TYPE<-factor(c(rep(0,48),rep(1,48)),labels=c("Commercial","Residential"))
+attach(Overdue)
+#par(mfrow=c(1,1))
+#plot(BILL[0:48],LATE[0:48])
+par(mfrow=c(1,1))
+plot(BILL[TYPE=="Residential"],LATE[TYPE=="Residential"],pch="R",col="Blue",ylab="LATE",xlab = "BILL",ylim=c(0,100))
+points(BILL[TYPE=="Commercial"],LATE[TYPE=="Commercial"],pch="C",col="red")
+m1<-lm(LATE~BILL + TYPE + TYPE:BILL)
+summary(m1)
+detach(Overdue)
+Overdue<-read.table('F:/unr/4th sem/applied regression analysis/Assignments/Final Exam/overdue.txt',header=T)
+attach(Overdue)
+Overdue$TYPE<-factor(c(rep(0,48),rep(1,48)),labels=c("Commercial","Residential"))
+attach(Overdue)
+#par(mfrow=c(1,1))
+#plot(BILL[0:48],LATE[0:48])
+par(mfrow=c(1,1))
+plot(BILL[TYPE=="Residential"],LATE[TYPE=="Residential"],pch="R",col="Blue",ylab="LATE",xlab = "BILL",ylim=c(0,100))
+points(BILL[TYPE=="Commercial"],LATE[TYPE=="Commercial"],pch="C",col="red")
+m1<-lm(LATE~BILL + TYPE + TYPE:BILL)
+summary(m1)
+detach(Overdue)
+Overdue<-read.table('F:/unr/4th sem/applied regression analysis/Assignments/Final Exam/overdue.txt',header=T)
+attach(Overdue)
+Overdue$TYPE<-factor(c(rep(1,48),rep(0,48)),labels=c("Commercial","Residential"))
+attach(Overdue)
+#par(mfrow=c(1,1))
+#plot(BILL[0:48],LATE[0:48])
+par(mfrow=c(1,1))
+plot(BILL[TYPE=="Residential"],LATE[TYPE=="Residential"],pch="R",col="Blue",ylab="LATE",xlab = "BILL",ylim=c(0,100))
+points(BILL[TYPE=="Commercial"],LATE[TYPE=="Commercial"],pch="C",col="red")
+m1<-lm(LATE~BILL + TYPE + TYPE:BILL)
+summary(m1)
+detach(Overdue)
+Overdue<-read.table('F:/unr/4th sem/applied regression analysis/Assignments/Final Exam/overdue.txt',header=T)
+attach(Overdue)
+Overdue$residential[1:48]<-1
+Overdue$residential[49:96]<-0
+attach(Overdue)
+par(mfrow=c(1,1))
+plot(BILL[residential==1],LATE[residential==1],pch='r',col="Blue",ylab="LATE",xlab = "BILL",ylim=c(0,100))
+points(BILL[residential==0],LATE[residential==0],pch='c',col="green")
+m1<-lm(LATE~BILL + residential + residential:BILL)
+summary(m1)
+detach(Overdue)
+mreduced<-lm(LATE~BILL)
+mreduces
+mreduced<-lm(LATE~BILL)
+mreduced
+mreduced<-lm(LATE~BILL)
+summary(mreduced)
+anova(mreduced,m1)
+ais<-read.table('F:/unr/4th sem/applied regression analysis/Assignments/Final Exam/ais.txt',header=T)
+attach(ais)
+ais<-read.table('F:/unr/4th sem/applied regression analysis/Assignments/Final Exam/ais.txt',header=T)
+attach(ais)
+str(ais)
+m1<-glm(Sex~RCC+WCC+BMI)
+ais<-read.table('F:/unr/4th sem/applied regression analysis/Assignments/Final Exam/ais.txt',header=T)
+attach(ais)
+str(ais)
+m1<-glm(Sex~RCC+WCC+BMI)
+summary(m1)
+ais<-read.table('F:/unr/4th sem/applied regression analysis/Assignments/Final Exam/ais.txt',header=T)
+attach(ais)
+m1<-glm(Sex~RCC+WCC+BMI)
+summary(m1)
+ais<-read.table('F:/unr/4th sem/applied regression analysis/Assignments/Final Exam/ais.txt',header=T)
+str(ais)
+RCC <- ais$RCC
+WCC <- ais$WCC
+BMI <- ais$BMI
+G <- ais$Sex
+m1 <- glm(G~RCC+WCC+ BMI,family = binomial(),data=ais)
+summary(m1)
+ais<-read.table('F:/unr/4th sem/applied regression analysis/Assignments/Final Exam/ais.txt',header=T)
+RCC <- ais$RCC
+WCC <- ais$WCC
+BMI <- ais$BMI
+G <- ais$Sex
+m1 <- glm(G~RCC+WCC+ BMI,family = binomial(),data=ais)
+summary(m1)
+library(alr3)
+ais<-read.table('F:/unr/4th sem/applied regression analysis/Assignments/Final Exam/ais.txt',header=T)
+str(ais)
+RCC <- ais$RCC
+WCC <- ais$WCC
+BMI <- ais$BMI
+G <- ais$Sex
+ais<-read.table('F:/unr/4th sem/applied regression analysis/Assignments/Final Exam/ais.txt',header=T)
+RCC <- ais$RCC
+WCC <- ais$WCC
+BMI <- ais$BMI
+G <- ais$Sex
+m1 <- glm(G~RCC+WCC+ BMI,family = binomial(),data=ais)
+summary(m1)
+ais<-read.table('F:/unr/4th sem/applied regression analysis/Assignments/Final Exam/ais.txt',header=T)
+attach(ais)
+m1<-glm(Sex~RCC+WCC+BMI,family=binomial(),data=ais)
+summary(m1)
+library(alr3)
+install.packages("alr4")
+library(alr4)
+par(mfrow=c(2,3))
+mmp(m1,RCC)
+mmp(m1,WCC)
+mmp(m1,BMI)
+mmp(m1,m1$fitted.values,xlab="Fitted Values")
+library(alr4)
+par(mfrow=c(2,3))
+mmp(m1,RCC)
+mmp(m1,WCC)
+mmp(m1,BMI)
+mmp(m1,m1$fitted.values,xlab="Fitted Values")
+hist(WCC)
+hist(WCC)
+lines(Density(WCC))
+hist(WCC)
+lines(Density(WCC))
+hist(WCC)
+lines(density(WCC))
+hist(WCC)
+lines(density(WCC))
+m2<-glm(G~RCC+log(WCC)+ BMI,family = binomial(),data=ais)
+par(mfrow=c(2,3))
+mmp(m2,RCC)
+mmp(m2,WCC)
+#mpp(m2,log(WCC))
+mmp(m2,BMI)
+mmp(m2,m2$fitted.values,xlab="Fitted Values")
+m2<-glm(G~RCC+ WCC +log(WCC)+ BMI,family = binomial(),data=ais)
+par(mfrow=c(2,3))
+mmp(m2,RCC)
+mmp(m2,WCC)
+#mpp(m2,log(WCC))
+mmp(m2,BMI)
+mmp(m2,m2$fitted.values,xlab="Fitted Values")
+m2<-glm(G~RCC+ WCC +log(WCC)+ log(BMI)+ BMI,family = binomial(),data=ais)
+par(mfrow=c(2,3))
+mmp(m2,RCC)
+mmp(m2,WCC)
+mmp(m2,BMI)
+mmp(m2,m2$fitted.values,xlab="Fitted Values")
+m2<-glm(Sex~RCC+ WCC +log(WCC)+ log(BMI)+ BMI,family = binomial(),data=ais)
+par(mfrow=c(2,3))
+mmp(m2,RCC)
+mmp(m2,WCC)
+mmp(m2,BMI)
+mmp(m2,m2$fitted.values,xlab="Fitted Values")
+library(alr4)
+par(mfrow=c(2,3))
+mmp(m1,RCC)
+mmp(m1,WCC)
+mmp(m1,BMI)
+mmp(m1,m1$fitted.values,xlab="Fitted Values")
+hist(WCC)
+lines(density(WCC))
+hist(BMI)
+lines(density(BMI))
+m2<-glm(Sex~RCC+ WCC +log(WCC)+ log(BMI)+ BMI,family = binomial(),data=ais)
+par(mfrow=c(2,3))
+mmp(m2,RCC)
+mmp(m2,WCC)
+mmp(m2,BMI)
+mmp(m2,m2$fitted.values,xlab="Fitted Values")
+# Analysis of Deviance table
+anova(m1,m2,test="Chisq")
+par(mfrow=c(1,1))
+hvalues <- influence(m2)$hat
+stanresDeviance <- residuals(m2)/sqrt(1-hvalues)
+plot(hvalues,stanresDeviance,ylab="Standardized Deviance Residuals",xlab="Leverage Values")
+abline(v=15/202,lty=2)
+identify(hvalues,stanresDeviance,cex=0.75)
+residual<-m2$residuals
+leverage<-hatvalues(m2)
+cutofflev<-30/nrow(ais)
+out1<-leverage[leverage>cutofflev]
+out1
+out1
+m2<-glm(G~RCC+WCC+ log(WCC) + BMI+ log(BMI),family = binomial(),data=ais)
+summary(m2)
+m3 = glm(G~RCC+log(WCC)+BMI+log(BMI),family=binomial(),data=ais)
+anova(m3,m2,test="Chisq")
+m2<-glm(Sex~RCC+ WCC +log(WCC)+ log(BMI)+ BMI,family = binomial(),data=ais)
+par(mfrow=c(2,3))
+mmp(m2,RCC)
+mmp(m2,WCC)
+mmp(m2,BMI)
+mmp(m2,m2$fitted.values,xlab="Fitted Values")
+# Analysis of Deviance table
+anova(m1,m2,test="Chisq")
+par(mfrow=c(1,1))
+hvalues <- influence(m2)$hat
+stanresDeviance <- residuals(m2)/sqrt(1-hvalues)
+plot(hvalues,stanresDeviance,ylab="Standardized Deviance Residuals",xlab="Leverage Values")
+abline(v=15/202,lty=2)
+identify(hvalues,stanresDeviance,cex=0.75)
+residual<-m2$residuals
+leverage<-hatvalues(m2)
+cutofflev<-30/nrow(ais)
+out1<-leverage[leverage>cutofflev]
+out1
+out1
+m2<-glm(Sex~RCC+WCC+ log(WCC) + BMI+ log(BMI),family = binomial(),data=ais)
+summary(m2)
+summary(m2)
+#Sex<-145.6087-6.2456*RCC-1.3425*WCC+11.4725*log(WCC)+ 2.1885*BMI-57.2779*log(BMI)
+set.seed(50)
+n<-202
+b0<-145.6087
+b1<--6.2456
+b2<--1.3425
+b3<-11.4725
+b4<-2.1885
+b5<--57.2779
+theta_x <- 1/( 1 + exp(-(b0+b1*RCC+b2*WCC+b3*log(WCC)+ b4*BMI+ b5*log(BMI))) )
+y <- rbinom(n = n, size = 1, prob = theta_x )
+df1=data.frame(y=y,x1=RCC,x2=WCC,x3=BMI)
+glm(y~RCC+WCC+log(WCC)+BMI+log(BMI))
+summary(m2)
+set.seed(50)
+n<-202
+b0<-145.6087
+b1<--6.2456
+b2<--1.3425
+b3<-11.4725
+b4<-2.1885
+b5<--57.2779
+theta_x <- 1/( 1 + exp(-(b0+b1*RCC+b2*WCC+b3*log(WCC)+ b4*BMI+ b5*log(BMI))) )
+y <- rbinom(n = n, size = 1, prob = theta_x )
+DataFrame=data.frame(y=y,x1=RCC,x2=WCC,x3=BMI)
+glm(DataFrame~RCC+WCC+log(WCC)+BMI+log(BMI))
+summary(m2)
+set.seed(50)
+n<-202
+b0<-145.6087
+b1<--6.2456
+b2<--1.3425
+b3<-11.4725
+b4<-2.1885
+b5<--57.2779
+theta_x <- 1/( 1 + exp(-(b0+b1*RCC+b2*WCC+b3*log(WCC)+ b4*BMI+ b5*log(BMI))) )
+y <- rbinom(n = n, size = 1, prob = theta_x )
+Dframe=data.frame(y=y,x1=RCC,x2=WCC,x3=BMI)
+glm(Dframe~RCC+WCC+log(WCC)+BMI+log(BMI))
+summary(m2)
+set.seed(50)
+n<-202
+b0<-145.6087
+b1<--6.2456
+b2<--1.3425
+b3<-11.4725
+b4<-2.1885
+b5<--57.2779
+theta_x <- 1/( 1 + exp(-(b0+b1*RCC+b2*WCC+b3*log(WCC)+ b4*BMI+ b5*log(BMI))) )
+y <- rbinom(n = n, size = 1, prob = theta_x )
+DataFrame=data.frame(y=y,x1=RCC,x2=WCC,x3=BMI)
+glm(y~RCC+WCC+log(WCC)+BMI+log(BMI))
+b5<--57.2779
+summary(m2)
+set.seed(50)
+n<-202
+b0<-145.6087
+b1<--6.2456
+b2<--1.3425
+b3<-11.4725
+b4<-2.1885
+b5<--57.2779
+theta_x <- 1/( 1 + exp(-(b0+b1*RCC+b2*WCC+b3*log(WCC)+ b4*BMI+ b5*log(BMI))) )
+y <- rbinom(n = n, size = 1, prob = theta_x )
+DataFrame=data.frame(y=y,x1=RCC,x2=WCC,x3=BMI)
+modelFake<-glm(y~RCC+WCC+log(WCC)+BMI+log(BMI))
+car::mmps(modelFake,layout=c(3,3))
+summary(m2)
+set.seed(50)
+n<-202
+b0<-145.6087
+b1<--6.2456
+b2<--1.3425
+b3<-11.4725
+b4<-2.1885
+b5<--57.2779
+theta_x <- 1/( 1 + exp(-(b0+b1*RCC+b2*WCC+b3*log(WCC)+ b4*BMI+ b5*log(BMI))) )
+y <- rbinom(n = n, size = 1, prob = theta_x )
+DataFrame=data.frame(y=y,x1=RCC,x2=WCC,x3=BMI)
+modelFake<-glm(y~RCC+WCC+log(WCC)+BMI+log(BMI))
+summary(modelFake)
+car::mmps(modelFake,layout=c(3,3))
+summary(m2)
+set.seed(50)
+n<-202
+b0<-145.6087
+b1<--6.2456
+b2<--1.3425
+b3<-11.4725
+b4<-2.1885
+b5<--57.2779
+theta_x <- 1/( 1 + exp(-(b0+b1*RCC+b2*WCC+b3*log(WCC)+ b4*BMI+ b5*log(BMI))) )
+yFake <- rbinom(n = n, size = 1, prob = theta_x )
+DataFrame=data.frame(y=yFake,x1=RCC,x2=WCC,x3=BMI)
+modelFake<-glm(yFake~RCC+WCC+log(WCC)+BMI+log(BMI))
+summary(modelFake)
+car::mmps(modelFake,layout=c(3,3))
+yFake
+summary(m2)
+set.seed(50)
+n<-202
+b0<-145.6087
+b1<--6.2456
+b2<--1.3425
+b3<-11.4725
+b4<-2.1885
+b5<--57.2779
+theta_x <- 1/( 1 + exp(-(b0+b1*RCC+b2*WCC+b3*log(WCC)+ b4*BMI+ b5*log(BMI))) )
+yFake <- rbinom(n = n, size = 1, prob = theta_x )
+DataFrame=data.frame(y=yFake,x1=RCC,x2=WCC,x3=BMI)
+modelFake<-glm(yFake~RCC+WCC+log(WCC)+BMI+log(BMI))
+summary(modelFake)
+car::mmps(modelFake,layout=c(3,3))
+summary(m2)
+set.seed(100)
+n<-202
+b0<-145.6087
+b1<--6.2456
+b2<--1.3425
+b3<-11.4725
+b4<-2.1885
+b5<--57.2779
+theta_x <- 1/( 1 + exp(-(b0+b1*RCC+b2*WCC+b3*log(WCC)+ b4*BMI+ b5*log(BMI))) )
+yFake <- rbinom(n = n, size = 1, prob = theta_x )
+DataFrame=data.frame(y=yFake,x1=RCC,x2=WCC,x3=BMI)
+modelFake<-glm(yFake~RCC+WCC+log(WCC)+BMI+log(BMI))
+summary(modelFake)
+car::mmps(modelFake,layout=c(3,3))
+summary(m2)
+set.seed(100)
+n<- 202
+b0<- (145.6087)
+b1<- (-6.2456)
+b2<- (-1.3425)
+b3<- (11.4725)
+b4<- (2.1885)
+b5<- (-57.2779)
+theta_x <- 1/( 1 + exp(-(b0+b1*RCC+b2*WCC+b3*log(WCC)+ b4*BMI+ b5*log(BMI))) )
+yFake <- rbinom(n = n, size = 1, prob = theta_x )
+DataFrame=data.frame(y=yFake,x1=RCC,x2=WCC,x3=BMI)
+modelFake<-glm(yFake~RCC+WCC+log(WCC)+BMI+log(BMI))
+summary(modelFake)
+car::mmps(modelFake,layout=c(3,3))
+summary(m2)
+set.seed(100)
+n<- 202
+b0<- (145.6087)
+b1<- (-6.2456)
+b2<- (-1.3425)
+b3<- (11.4725)
+b4<- (2.1885)
+b5<- (-57.2779)
+theta_x <- 1/( 1 + exp(-(b0+b1*RCC+b2*WCC+b3*log(WCC)+ b4*BMI+ b5*log(BMI))) )
+yFake <- rbinom(n = n, size = 1, prob = theta_x )
+DataFrame=data.frame(y=yFake,x1=RCC,x2=WCC,x3=BMI)
+modelFake<-glm(yFake~RCC+WCC+log(WCC)+BMI+log(BMI),family=binomial
+summary(modelFake)
+summary(m2)
+set.seed(100)
+n<- 202
+b0<- (145.6087)
+b1<- (-6.2456)
+b2<- (-1.3425)
+b3<- (11.4725)
+b4<- (2.1885)
+b5<- (-57.2779)
+theta_x <- 1/( 1 + exp(-(b0+b1*RCC+b2*WCC+b3*log(WCC)+ b4*BMI+ b5*log(BMI))) )
+yFake <- rbinom(n = n, size = 1, prob = theta_x )
+DataFrame=data.frame(y=yFake,x1=RCC,x2=WCC,x3=BMI)
+modelFake<-glm(yFake~RCC+WCC+log(WCC)+BMI+log(BMI),family=binomial())
+summary(modelFake)
+car::mmps(modelFake,layout=c(3,3))
+summary(m2)
+set.seed(500)
+n<- 202
+b0<- (145.6087)
+b1<- (-6.2456)
+b2<- (-1.3425)
+b3<- (11.4725)
+b4<- (2.1885)
+b5<- (-57.2779)
+theta_x <- 1/( 1 + exp(-(b0+b1*RCC+b2*WCC+b3*log(WCC)+ b4*BMI+ b5*log(BMI))) )
+yFake <- rbinom(n = n, size = 1, prob = theta_x )
+DataFrame=data.frame(y=yFake,x1=RCC,x2=WCC,x3=BMI)
+modelFake<-glm(yFake~RCC+WCC+log(WCC)+BMI+log(BMI),family=binomial())
+summary(modelFake)
+car::mmps(modelFake,layout=c(3,3))
+summary(m2)
+set.seed(500)
+n<- 202
+b0<- (145.6087)
+b1<- (-6.2456)
+b2<- (-1.3425)
+b3<- (11.4725)
+b4<- (2.1885)
+b5<- (-57.2779)
+theta_x <- 1/( 1 + exp(-(b0+b1*RCC+b2*WCC+b3*log(WCC)+ b4*BMI+ b5*log(BMI))) )
+yFake <- rbinom(n = n, size = 1, prob = theta_x )
+DataFrame=data.frame(y=yFake,x1=RCC,x2=WCC,x3=BMI)
+modelFake<-glm(yFake~RCC+WCC+log(WCC)+BMI+log(BMI),family=binomial())
+summary(modelFake)
+car::mmps(modelFake,layout=c(3,3))
