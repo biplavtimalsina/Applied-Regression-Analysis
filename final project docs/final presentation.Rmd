@@ -1,0 +1,190 @@
+Codes for Final report
+
+Biplav TImalsina
+and
+Dhurba Neupane
+
+```{r, echo=FALSE,results='hide'}
+NS<-read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW7/NStudy.csv",header = TRUE)
+newFullData<-NS[,c(3,4,5,6,7,8)]
+newData<-NS[1:100,c(3,4,5,6,7,8)]
+attach(newData)
+
+pairs(~Block+Cultivar+NSource+NRate+Seedyield+Year,data=newData, 
+   main="ScatterPlot")
+
+par(mfrow=c(1,1))
+plot(Year,Seedyield,ylab="Seedyield",xlab="Year")
+
+par(mfrow=c(1,1))
+plot(Block,Seedyield,ylab="Seedyield",xlab="Block")
+
+```
+
+
+```{r}
+#Creating all possible subsets
+X <- cbind(NRate,Cultivar,Block,Year,NSource)
+library(leaps)
+b <- regsubsets(as.matrix(X),Seedyield)
+rs <- summary(b)
+rs
+par(mfrow=c(1,1))
+library(car)
+subsets(b,statistic=c("adjr2"),legend=FALSE)
+
+
+
+
+```
+
+
+```{r}
+#generating fake data pairs(~Block+Cultivar+NSource+NRate+Seedyield+Year,data=newData, 
+NS<-read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW7/NStudy.csv",header = TRUE)
+attach(NS)
+lm <- glm(formula = Seedyield ~ Block+Cultivar+Year+NRate, data = NS)
+summary(lm)
+standres<-rstandard(lm)
+par(mfrow=c(2,2))
+plot(Block,standres, ylab="Standardized Residuals")
+plot(Cultivar,standres, ylab="Standardized Residuals")
+plot(Year,standres, ylab="Standardized Residuals")
+plot(NRate,standres, ylab="Standardized Residuals")
+library(car)
+vif(lm)
+
+
+
+standres<-rstandard(model2)
+par(mfrow=c(2,2))
+plot(Block,standres, ylab="Standardized Residuals")
+plot(Cultivar,standres, ylab="Standardized Residuals")
+plot(NSource,standres, ylab="Standardized Residuals")
+plot(NRate,standres, ylab="Standardized Residuals")
+library(car)
+car::mmps(model2, layout=c(3,3))
+
+```
+
+
+```{r}
+
+
+
+CultivarProghorn<-Cultivar=="Pronghorn";
+CultivarProghorn[CultivarProghorn==TRUE]<-1;
+
+NRate40<-NRate=="N40"
+NRate40[NRate40==TRUE]<-1
+
+NRate80<-NRate=="N80"
+NRate80[NRate80==TRUE]<-1
+
+NRate120<-NRate=="N120"
+NRate120[NRate120==TRUE]<-1
+ 
+
+#Yield= 480353.88 + 185.47*Block -265.64*CultivarProghorn -238.1*Year 
+	#	+ 407.64* Nrate120 + 60.48*NRate40 + 376.31* NRate90 
+error<-rnorm(n=nrow(NS),mean=0,sd=2)
+
+
+fake_yield<-  480353.88 + 185.47*Block -265.64*CultivarProghorn -238.1*Year	+ 407.64* NRate120 + 60.48*NRate40 + 376.31* NRate80 +error
+fake_lm <- glm(formula = fake_yield ~ Block+Cultivar+Year+NRate, data = NS)
+summary(fake_lm)
+
+car::mmps(fake_lm, layout=c(3,3))
+
+```
+
+SAS Code:
+PROC IMPORT DATAFILE="/folders/myfolders/wombat/NStudy.csv"
+		    OUT=WORK.MYEXCEL
+		    DBMS=CSV
+		    REPLACE;
+RUN;
+
+/*model1*/
+proc genmod data= WORK.MYEXCEL  descending;
+class  NRate (ref="N00") Cultivar(ref="Pronghorn") NSource(ref="N1") Block(ref="1") Year(ref="2016");
+model Seedyield = Block Cultivar NRate NSource Year; 
+run;
+
+/*model1-block*/
+proc genmod data= WORK.MYEXCEL  descending;
+class  NRate (ref="N00") Cultivar(ref="Pronghorn") NSource(ref="N1") Block(ref="1") Year(ref="2016");
+model Seedyield =  Cultivar NRate NSource Year; 
+run;
+
+/*model1-cultivar*/
+proc genmod data= WORK.MYEXCEL  descending;
+class  NRate (ref="N00") Cultivar(ref="Pronghorn") NSource(ref="N1") Block(ref="1") Year(ref="2016");
+model Seedyield = Block  NRate NSource Year; 
+run;
+
+/*model1-year*/
+proc genmod data= WORK.MYEXCEL  descending;
+class  NRate (ref="N00") Cultivar(ref="Pronghorn") NSource(ref="N1") Block(ref="1") Year(ref="2016");
+model Seedyield = Block Cultivar NRate  Year; 
+run;
+
+/*model1-NRate*/
+proc genmod data= WORK.MYEXCEL  descending;
+class  NRate (ref="N00") Cultivar(ref="Pronghorn") NSource(ref="N1") Block(ref="1") Year(ref="2016");
+model Seedyield = Block Cultivar NSource Year; 
+run;
+
+/*model2*/
+proc genmod data= WORK.MYEXCEL  descending;
+class  NRate (ref="N00") Cultivar(ref="Pronghorn") NSource(ref="N1") Block(ref="1") Year(ref="2016");
+model Seedyield =  BLock Cultivar NRate NSource; 
+run;
+
+/*model2-Block*/
+proc genmod data= WORK.MYEXCEL  descending;
+class  NRate (ref="N00") Cultivar(ref="Pronghorn") NSource(ref="N1") Block(ref="1") Year(ref="2016");
+model Seedyield = Cultivar NRate  NSource; 
+run;
+
+/*model1-NSource*/
+proc genmod data= WORK.MYEXCEL  descending;
+class  NRate (ref="N00") Cultivar(ref="Pronghorn") NSource(ref="N1") Block(ref="1") Year(ref="2016");
+model Seedyield = Block Cultivar NRate ; 
+run;
+
+
+/*model2-Cultivar*/
+proc genmod data= WORK.MYEXCEL  descending;
+class  NRate (ref="N00") Cultivar(ref="Pronghorn") NSource(ref="N1") Block(ref="1") Year(ref="2016");
+model Seedyield =  NSource BLock NRate; 
+run;
+
+/*model2-nRate*/
+proc genmod data= WORK.MYEXCEL  descending;
+class  NRate (ref="N00") Cultivar(ref="Pronghorn") NSource(ref="N1") Block(ref="1") Year(ref="2016");
+model Seedyield =  NSource Block Cultivar ; 
+run;
+
+/*model2-Nsource*/
+proc genmod data= WORK.MYEXCEL  descending;
+class  NRate (ref="N00") Cultivar(ref="Pronghorn") NSource(ref="N1") Block(ref="1") Year(ref="2016");
+model Seedyield =  Block NRate Cultivar; 
+run;
+
+/*final model*/
+proc genmod data= WORK.MYEXCEL  descending;
+class  NRate (ref="N00") Cultivar(ref="Pronghorn") NSource(ref="N1") Block(ref="1") Year(ref="2016");
+model Seedyield =  Cultivar NRate NSource Block; 
+run;
+
+/*for final model 2*/
+```{r}
+
+BlockR<-factor(Block)
+CultivarR<-factor(Cultivar,level=c("Pronghorn","BlaineCreek"))
+model2<-glm(formula = Seedyield ~ BlockR+CultivarR+NRate+NSource, data = NS)
+summary(model2)
+vif(model2)
+```
+
