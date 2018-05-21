@@ -1,0 +1,527 @@
+---
+title: "Assignment 7"
+author: "Biplav Timalsina"
+date: "April 15, 2018"
+output:
+  pdf_document: default
+  word_document: default
+---
+
+  
+  
+  
+  \vspace{40pt}
+
+
+![](F:/unr/shift1.png)![](F:/unr/shift1.png)![](F:/unr/logo1.png)
+
+
+```{r setup, include=FALSE}
+library(knitr)
+library(pander)
+opts_chunk$set(echo = TRUE)
+
+```
+
+
+\vspace{175pt}
+
+
+
+# \hspace{90pt} STAT 757 Applied Regression Analysis
+
+---
+  
+  \vspace{132pt}
+\vspace{10pt}
+\vspace{10pt}
+
+\vspace{10pt}
+\vspace{10pt}
+\vspace{5pt}
+
+
+
+
+## Exercise 7.5.3 [60 points] 
+
+This is a continuation of Exercise 5 in Chapter 6. The golf fan was so impressed with your answers to part 1 that your advice has been sought re the next stage in the data analysis, namely using model selection to remove the redundancy in full the model developed in part 1.
+
+ $log(Y)= {\beta_0}+{\beta_1}x1+{\beta_2}x2+{\beta_3}x3+{\beta_4}x4+{\beta_5}x5+{\beta_6}x6+{\beta_7}x7+{\epsilon}............(7.10)$
+      
+ where   
+ 
+Y = PrizeMoney ;   x1  = Driving Accuracy ;  x2 = GIR ;  x3 = PuttingAverage ;  x4 = BirdieConversion ; x5 = SandSaves ;  x6 = Scrambling;  and  x7  = PuttsPerRound.   
+ 
+Interest centers on using variable selection to choose a subset of the predictors to model the transformed version of  Y . Throughout this question we shall assume that model (7.10) is a valid model for the data.
+
+
+
+
+
+Let us first make a model fitting all the covariates.
+
+```{r, echo=FALSE,results='hide'}
+#library(MASS)
+library(pander)
+#library(contriburl)
+PGA<-read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW7/pgatour2006.csv",header=T)
+attach(PGA)
+m1<-lm(log(PrizeMoney)~DrivingAccuracy+GIR+PuttingAverage+BirdieConversion+SandSaves+Scrambling+PuttsPerRound)
+summary(m1)
+```
+
+We can observe that only two covariate, GIR and BirdieConversion are the statistically significant, and Residual standard erros is 0.6639 which is fair. Now we move to variable selection.
+
+```{r}
+#Creating all possible subsets
+X <- cbind(DrivingAccuracy,GIR,PuttingAverage,BirdieConversion,SandSaves,Scrambling,PuttsPerRound)
+library(leaps)
+b <- regsubsets(as.matrix(X),log(PrizeMoney))
+rs <- summary(b)
+rs
+par(mfrow=c(1,1))
+library(car)
+subsets(b,statistic=c("adjr2"),legend=FALSE)
+
+
+```
+
+We can observe above the best subsets of predictors for different values of number of covariates. Accordingly, we can develop models selecting corresponding covariates, and observing the values of $R^2_Adj$, AIC,AICc and BIC.
+Below we calculate all these values.
+
+```{r}
+#Table values of ${R^2}adj$ , AIC, $AIC_C$, BIC
+#Calculate adjusted R-squared
+rs$adjr2
+
+om1 <- lm(log(PrizeMoney)~GIR)
+#summary(om1)
+om2 <- lm(log(PrizeMoney)~GIR+PuttsPerRound)
+#summary(om2)
+om3 <-lm(log(PrizeMoney)~GIR+BirdieConversion+Scrambling)
+#summary(om3)
+om4 <- lm(log(PrizeMoney)~GIR+BirdieConversion+Scrambling+SandSaves)
+#summary(om4)
+om5 <- lm(log(PrizeMoney)~GIR+BirdieConversion+Scrambling+SandSaves+PuttsPerRound)
+#summary(om5)
+om6 <- lm(log(PrizeMoney)~GIR+BirdieConversion+Scrambling+SandSaves+PuttsPerRound+DrivingAccuracy)
+#summary(om6)
+om7 <- lm(log(PrizeMoney)~DrivingAccuracy+GIR+PuttingAverage+BirdieConversion+SandSaves+Scrambling+PuttsPerRound)
+#summary(om7)
+```
+These are all the models developed. Now we extract the values of AIC, BIC and AICc for various models.
+GIR
+GIR+PPR
+GIR+BC+SC
+GIR+BC+SC+SS
+GIR+BC+SC+SS+PPR
+GIR+BC+SC+SS+PPR+DA
+GIR+BC+SC+SS+PPR+DA+PA
+
+```{r}
+
+
+#Subset size=1
+n <- length(om1$residuals)
+npar <- length(om1$coefficients) +1
+#Calculate AIC
+extractAIC(om1,k=2)
+#Calculate AICc
+extractAIC(om1,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om1,k=log(n))
+#Subset size=2
+npar <- length(om2$coefficients) +1
+#Calculate AIC
+extractAIC(om2,k=2)
+#Calculate AICc
+extractAIC(om2,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om2,k=log(n))
+#Subset size=3
+npar <- length(om3$coefficients) +1
+#Calculate AIC
+extractAIC(om3,k=2)
+#Calculate AICc
+extractAIC(om3,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om3,k=log(n))
+
+#Subset size=4
+npar <- length(om4$coefficients) +1
+#Calculate AIC
+extractAIC(om4,k=2)
+#Calculate AICc
+extractAIC(om4,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om4,k=log(n))
+#Subset size=5
+npar <- length(om5$coefficients) +1
+#Calculate AIC
+extractAIC(om5,k=2)
+#Calculate AICc
+extractAIC(om5,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om5,k=log(n))
+
+#Subset size=6
+npar <- length(om6$coefficients) +1
+#Calculate AIC
+extractAIC(om6,k=2)
+#Calculate AICc
+extractAIC(om6,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om6,k=log(n))
+
+#Subset size=7
+npar <- length(om7$coefficients) +1
+#Calculate AIC
+extractAIC(om7,k=2)
+#Calculate AICc
+extractAIC(om7,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om7,k=log(n))
+```
+
+
+
+
+(a) Identify the optimal model or models based on  ${R^2}Adj$ , AIC, AICC, BIC from the approach based on all possible subsets.  
+
+Interpretation:
+From the calculation above, we can populate the following table.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rllrrl}
+\hline
+Subset size & Predictors &${R^2}_{Adj}$ & AIC & ${AIC}_C$ & BIC\\
+\hline
+1  & GIR & 0.251 & -62.516 & -61.54 & -55.95\\
+2  & GIR+PPR & 0.486 & -135.220 & -135.011 & -125.386\\
+3  & GIR+BC+SC & 0.538 & -155.311 & -154.99 & \textbf{-142.198}\\
+4  & GIR+BC+SC+SS & 0.543 & -156.291 & -155.846 & -139.901\\
+5  & GIR+BC+SC+SS+PPR & \textbf{0.546} & \textbf{-156.642} & \textbf{-156.0432} & -136.973\\
+6  & GIR+BC+SC+SS+PPR+DA & 0.544 & -154.731 & -153.960 & -131.784\\
+7  & GIR+BC+SC+SS+PPR+DA+PA & 0.541 & -152.736 & -151.76 & -126.511\\
+\hline
+\end{tabular}
+\end{table}
+
+
+
+The table above gives the values of ${R^2}_{Adj}$, AIC, ${AIC}_C$ and BIC for the best subset of each size. From the table, we notice that ${R^2}-{Adj}$, AIC & ${AIC}_C$ judge the predictor subset of size 5 to be "best" while BIC judges the subset of size 3 to be the "best." 
+```{r}
+om3 <-lm(log(PrizeMoney)~GIR+BirdieConversion+Scrambling)
+summary(om3)
+
+om5 <- lm(log(PrizeMoney)~GIR+BirdieConversion+Scrambling+SandSaves+PuttsPerRound)
+summary(om5)
+```
+
+
+
+Notice that three predictor variables are judged to be statistically significant for both models (Scrambling is only slightly significant in 5 variable model).
+
+A popular data anlaysis strategy which I have adopted according to book is to calculate $R^2_{Adj}$, AIC, $AIC_C$ and BIC and then seelct the model which minimizes AIC, $AIC_C$ and BIC. Accordingly, since Model5 has the maximum $R^2_{Adj}$ with 0.546 and minimum $AIC_C$ and AIC, but Model3 only has minimized BIC with -142.198, I think BIC has penalized model 5 because it has larger number of covariate in it. So, I think model5 is better in this case. But for model simplicity,we could choose model3.
+
+
+(b) Identify the optimal model or models based on AIC and BIC from the approach based on backward selection.  
+
+```{r}
+
+#Stepwise Subsets
+#Output from R: Backward Elimination based on AIC and BIC
+backAIC <- step(om7,direction="backward", data=PGA)
+```
+
+
+```{r}
+
+backBIC <- step(om7,direction="backward", data=PGA, k=log(n))
+```
+
+Interpretation:
+
+From the backward elimination based on AIC, we choose the model with the five predictors GIR, BirdieConversiton, SandSaves, Scrambling and PuttsPerRound. It can be seen that backward elimination based on BIC chooses the model with the three predictors GIR, BirdieConversion and Scrambling.
+
+(c) Identify the optimal model or models based on AIC and BIC from the approach based on forward selection.
+
+```{r}
+#Output from R: Forward Selection based on AIC and BIC
+mint <- lm(log(PrizeMoney)~1,data=PGA)
+forwardAIC <- step(mint,scope=list(lower=~1, 
+upper=~DrivingAccuracy+GIR+PuttingAverage+BirdieConversion+SandSaves+Scrambling+PuttsPerRound),
+direction="forward", data=PGA)
+```
+
+```{r}
+forwardBIC <- step(mint,scope=list(lower=~1, 
+upper=~DrivingAccuracy+GIR+PuttingAverage+BirdieConversion+SandSaves+Scrambling+PuttsPerRound),
+direction="forward", data=PGA,k=log(n))
+
+#detach(PGA)
+
+```
+Interpretation:
+We notice that both for ForwardAIC, we get model with 5 covariates as follows.
+$log(PrizeMoney) ~ GIR + PuttsPerRound + BirdieConversion + Scrambling + SandSaves $
+
+We notice that both for ForwardBIC, we get model with 4 covariates as follows.
+$log(PrizeMoney) ~ GIR + PuttsPerRound + BirdieConversion + Scrambling $
+
+(d) Carefully explain why the models chosen in (a) & (c) are not the same while those in (a) and (b) are the same. 
+For a, we go over all possible subsets of the models and hence it is exhaustive and has considered everything.
+For b, backward selection first starts with all the covariates, and removes those variates which are not significant one by one. Adding a variable now might confound the contribution of future covariates (the interplay between variable might be missed. Thus, only those variates are removed who do not contribute much to the model.
+For c, forward selection first starts with one variable that contributes least p-value. While doing so once a variable is added, it might negate the presence of other variates coming in. 
+
+Since a and c does its work in a different style, (a considers possible subset of all predictors, but c doesn't consider all possible covariate, ), hence they are different.
+
+But b starts with all the covariates and removes the variable with largest p value while there is interplay within variables. 
+
+
+(e) Recommend a final model. Give detailed reasons to support your choice.  
+Given all the finding and data earlier, I would recommend model with 5 variables. The reasons are:
+1) $R_adj$ is maximum for this model.
+2) $AIC_c$ and AIC is lowest for this model.
+3) Although from BIC, this model is not the most suitable, this might also be because of it penalizing more for 5 variables compared to 3 variables.
+
+# Scatter plot matrix 
+```{r,echo=FALSE,results='hide'}
+pairs(PrizeMoney~GIR+BirdieConversion+SandSaves+Scrambling+PuttsPerRound,data=PGA,cex.labels=1.4,main="Scatterplot matrix")
+
+om5 <- lm(log(PrizeMoney)~GIR+BirdieConversion+Scrambling+SandSaves+PuttsPerRound)
+
+# Residual plots against each predictor
+par(mfrow=c(3,3))
+StanRes1 <- rstandard(om5)
+plot(GIR,StanRes1, ylab="Standardized Residuals")
+plot(BirdieConversion,StanRes1, ylab="Standardized Residuals")
+plot(SandSaves,StanRes1, ylab="Standardized Residuals")
+plot(Scrambling,StanRes1, ylab="Standardized Residuals")
+plot(PuttsPerRound,StanRes1, ylab="Standardized Residuals")
+# Diagnostic plots for the regression model
+par(mfrow=c(2,3))
+plot(om5,main="Diagnostic plot om5")
+plot(om5$fitted.values,log(PrizeMoney),ylab ="log(PrizeMoney)",xlab="Fitted Values")
+abline(lsfit(om5$fitted.values,log(PrizeMoney)))
+par(mfrow=c(1,2))
+
+# Marginal model plots
+par(mfrow=c(3,3))
+mmp(om5,GIR)
+mmp(om5,BirdieConversion)
+mmp(om5,SandSaves)
+mmp(om5,Scrambling)
+mmp(om5,PuttsPerRound)
+mmp(om5,m1$fitted.values,xlab="Fitted Values")
+
+# Added-variable plots
+avPlots(om5)
+```
+We can see from above added variable plots that GIR and BirdieConversion are changing and all others are almost constant.
+4) From marginal model plots, the data and model lines are almost same,which indicates good fit.
+5)
+```{r,echo=FALSE}
+#variation inflation factor
+vif(om5)
+```
+We can see that our variables are not inflated, but later in our model we see - sign for PuttsPerSecond, which implies sign error. 
+
+(f) Interpret the regression coefficients in the final model. Is it necessary to be cautious about taking these results to literally?              
+
+The final model is:
+Log(Prizemoney)= -0.58+0.197(GIR)+ 0.162(BirdieConversion)+ 0.049*(Scrambling)+ 0.015(SandSaves)-0.349(PuttsPerRound)
+
+For every unit change in GIR, PrizeMoney roughly changes with e^(0.197). Similarly, for 0.162, 0.049, 0.015 and -0.349 increase in BirdieCOnversion, Scrambling, SandSaves and PuttsPerSecond, there is roughly e^(0.162), e^(0.049), e^(0.015) and e^(-0.349) increase in Prize Money.
+
+Our model that we have selected was not the best according to BIC, hence might be too complex to interpret and might have overfit the data as well. ALso the selection process changes the properties of the estimators as well as the standard inferential procedures such as test and confidence intervals. The regression coefficients obtained after variable selection are biased. Hence, yes it is definitely necessary to be cautious about taking these results too literally.
+
+
+# Project Milestones
+1. Conduct your data analysis plan.
+. Apply your model to fake data and ensure a proper fit.
+. Apply your model to real data.
+. Decide whether model is valid for the real data.
+
+2. Refine your model as needed until you are satisfied with the fit.
+. Don't make decisions based on p-values or other inferential devices!
+. Only consider the fit and whether your model addresses your research hypothesis.
+
+
+## Ans:
+#### This project work is done along with Dhurba Neupane.
+
+
+We start by fitting the data to generate a model. TO do so, lets use the method we used in this assignment. But before doing so, we divide the data into test and train data. We have a total of 128 data, out of which 100 is taken as train and 28 are used as training data.
+
+```{r}
+NS<-read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW7/NStudy.csv",header = TRUE)
+newFullData<-NS[,c(3,4,5,6,7,8,9,10)]
+newData<-NS[1:100,c(3,4,5,6,7,8,9,10)]
+attach(newData)
+#Creating all possible subsets
+X <- cbind(NRate,Cultivar,Block,Year,NSource)
+library(leaps)
+b <- regsubsets(as.matrix(X),Seedyield)
+rs <- summary(b)
+rs
+par(mfrow=c(1,1))
+library(car)
+subsets(b,statistic=c("adjr2"),legend=FALSE)
+
+
+```
+We observed the step in which the model was generated in the previous step. Now we study the five models.
+
+
+```{r}
+#Table values of ${R^2}adj$ , AIC, $AIC_C$, BIC
+#Calculate adjusted R-squared
+rs$adjr2
+
+om1 <- lm(Seedyield~Block)
+#summary(om1)
+om2 <- lm(Seedyield~Block+ Cultivar)
+#summary(om2)
+om3 <-lm(Seedyield~Block + Cultivar + Year)
+#summary(om3)
+om4 <- lm(Seedyield~Block+ Cultivar + Year + NRate)
+#summary(om4)
+om5 <- lm(Seedyield~Block+ Cultivar + Year + NRate+NSource)
+#summary(om5)
+
+#Calculate AIC, BIC, AICc
+
+#Subset size=1
+n <- length(om1$residuals)
+npar <- length(om1$coefficients) +1
+#Calculate AIC
+extractAIC(om1,k=2)
+#Calculate AICc
+extractAIC(om1,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om1,k=log(n))
+#Subset size=2
+npar <- length(om2$coefficients) +1
+#Calculate AIC
+extractAIC(om2,k=2)
+#Calculate AICc
+extractAIC(om2,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om2,k=log(n))
+#Subset size=3
+npar <- length(om3$coefficients) +1
+#Calculate AIC
+extractAIC(om3,k=2)
+#Calculate AICc
+extractAIC(om3,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om3,k=log(n))
+
+#Subset size=4
+npar <- length(om4$coefficients) +1
+#Calculate AIC
+extractAIC(om4,k=2)
+#Calculate AICc
+extractAIC(om4,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om4,k=log(n))
+
+#Subset size=5
+npar <- length(om5$coefficients) +1
+#Calculate AIC
+extractAIC(om5,k=2)
+#Calculate AICc
+extractAIC(om5,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om5,k=log(n))
+detach(newData)
+
+```
+0.2250729 0.2511338 0.2675698 0.2753340 0.2681911
+\begin{table}[ht]
+\centering
+\begin{tabular}{rllrrl}
+\hline
+Subset size & Predictors &${R^2}_{Adj}$ & AIC & ${AIC}_C$ & BIC\\
+\hline
+1  & Block & 0.2250729 & 1255.57 & 1255.82 & \textbf{1260.787}\\
+2  & Block+Cultivar & 0.2511338 &  1253.13 & 1253.551182 & 1260.946\\
+3  & Block + Cultivar + Year & 0.2675698 & 1253.294 & 1253.932279 & 1263.715\\
+4  & Block + Cultiar + Year + NRate & \textbf{0.2753340} & \textbf{1246.217} & \textbf{1247.799910} & 1264.454\\
+5 & Block +CUltivar+Year+NRate+NSource & 0.2681911 & 1248.14 & 1250.146 & 1268.98 \\
+
+\hline
+\end{tabular}
+\end{table}
+
+It seems from the above table that the fourth model with all the variables is best according to {R^2_adj}, AIC and $AIC_C$, while first model is best accordinng to BIC.
+A popular data anlaysis strategy which I have adopted according to book is to calculate $R^2_{Adj}$, AIC, $AIC_C$ and BIC and then seelct the model which minimizes AIC, $AIC_C$ and BIC. Accordingly, since Model4 has the maximum $R^2_{Adj}$ with 0.2625 and minimum $AIC_C$ and AIC, but Model1 only has minimized BIC with 1253.13, I think BIC has penalized model 4 because it has larger number of covariate in it. So, I think model4 is better in this case. But for model simplicity,we could choose model1.
+
+```{r}
+testData<-NS[101:128,c(3,4,5,6,7)]
+attach(testData)
+
+pred<-predict.lm(om4, testData)
+actualY<-NS[101:128,8]
+rmse<-sqrt(mean((pred-actualY)**2)/28)
+rmse
+detach(testData)
+
+
+```
+We observed the root mean square erros as 68.47 which is acceptable as the range of SeedYield is [31.06,2479.09]. But for 31.06 this doesn't make sense. However, we understand that this is an exception case.
+
+
+# Scatter plot matrix 
+```{r,echo=FALSE,results='hide'}
+newData<-NS[,c(3,4,5,6,7,8,9,10)]
+attach(newData)
+om4 <- lm(Seedyield~Block+ Cultivar + Year + NRate)
+summary(om4)
+detach(newData)
+```
+Hence, the model that we have chosen is:
+
+
+$SeedYield = 480353.88 + 185.47 Block - 265.64 Cultivar.Proghorn - 238.1 Year + 407.64 NRate120 + 60.48 NRate40 + 376.31 NRate80 $
+
+
+```{r}
+# Residual plots against each predictor
+newData<-NS[,c(3,4,5,6,7,8,9,10)]
+attach(newData)
+par(mfrow=c(3,3))
+StanRes1 <- rstandard(om4)
+plot(NRate,StanRes1, ylab="Standardized Residuals")
+plot(Year,StanRes1, ylab="Standardized Residuals")
+plot(Cultivar,StanRes1, ylab="Standardized Residuals")
+plot(Block,StanRes1, ylab="Standardized Residuals")
+#plot(NSource,StanRes1, ylab="Standardized Residuals")
+
+# Diagnostic plots for the regression model
+par(mfrow=c(2,3))
+plot(om4)
+plot(om4$fitted.values,log(Seedyield),ylab ="SeedYield",xlab="Fitted Values")
+abline(lsfit(om4$fitted.values,Seedyield))
+par(mfrow=c(1,2))
+
+# Marginal model plots
+par(mfrow=c(3,3))
+mmp(om4,Year)
+mmp(om4,Block)
+#mmp(om4,Cultivar)
+mmp(om4,NRate)
+mmp(om4,NSource)
+
+# Added-variable plots
+avPlots(om5)
+```
+From Added Variable plot, we an see that Block is the most signifant among all covariates. But, all other are also significant.
+From the residual plot, we can see that the variance is almost constant. None of the data are outliers.
+
+From all the above observations, plots and root mean square error we can say that the model is a valid  model. 
+
+

@@ -1,0 +1,200 @@
+---
+title: "Assignment 9"
+author: "Biplav Timalsina"
+date: "April 23, 2018"
+output:
+  pdf_document: default
+  word_document: default
+---
+
+  
+  
+  
+  \vspace{40pt}
+
+
+![](F:/unr/shift1.png)![](F:/unr/shift1.png)![](F:/unr/logo1.png)
+
+
+```{r setup, include=FALSE}
+library(knitr)
+library(pander)
+opts_chunk$set(echo = TRUE)
+
+```
+
+
+\vspace{175pt}
+
+
+
+# \hspace{90pt} STAT 757 Applied Regression Analysis
+
+---
+  
+  \vspace{132pt}
+\vspace{10pt}
+\vspace{10pt}
+
+\vspace{10pt}
+\vspace{10pt}
+\vspace{5pt}
+
+
+
+
+## Instructions [20 points]
+
+Modify this file to provide responses to the Ch.9 Exercises in @sheather2009. You can find some helpful code here: [http://www.stat.
+tamu.edu/~sheather/book/docs/rcode/Chapter9.R](http://www.stat.tamu.edu/~sheather/book/docs/rcode/Chapter9.R). Also address the project milestones indicated below. Please email **both** your .Rmd (or roxygen .R) and one of the following either .HTML, .PDF, or .DOCX using the format SURNAME-FIRSTNAME-Assignment9.Rmd and SURNAME-FIRSTNAME-Assignment9.pdf.
+
+## Exercise 9.4.1 [60 points] 
+
+![](F:/unr/c36.png)
+
+![](F:/unr/c37.png)
+
+
+![](F:/unr/c39.png)
+
+
+![](F:/unr/c40.png)
+
+
+
+
+![](F:/unr/c41.png)
+
+![](F:/unr/c42.png)
+
+![](F:/unr/c43.png)
+
+a) The preliminary data analysis that has been done by the staffer at AFC is good. He has recognized the presence of pattern in the plot of Standardized Residuals and years since 1975. Also the pLot of ACF and lag in Fig 9.16 indicates the presence of autocorelation of different levels (1, 2,3,4 and 9,10,11,12,13). This is very interesting pattern. Thence, he fit a model with errors AR(1), which is also reasonable. Again he fit a model assuming the erros are AR(1) using least squares based on the transformed versions of the response and the predictor variables in 9.6. The results were also consistent, which is natural. Finally, he observed that there is some pattern in Standardized LS Residuals and fittes values in Fig 9.17, but the figure of lags is correct in the same. And the pattern has raised some concern from him, which is natural. I think because he has not considered the Lag(2), lag(3) and other lags seen in the model, the pattern has been generated. We might need to consider the other models to address that.
+
+
+b) 
+I think I will go with the model with transformed values of the response and the predictor variables. So the final model is GrossBoxOffice=4.514 + 27.075 * YearsS1975.
+
+
+```{r, echo=FALSE,results='hide'}
+boxoffice <- read.table('F:/unr/4th sem/applied regression analysis/Assignments/HW9/boxoffice.txt', header=TRUE)
+attach(boxoffice)
+
+#Figure 9.16 on page 326
+YearsS1975 <- year - 1975
+lsm1 <- lm(GrossBoxOffice~YearsS1975,data=boxoffice)
+StanRes1 <- rstandard(lsm1)
+par(mfrow=c(2,2))
+plot(YearsS1975,GrossBoxOffice,ylab="Gross Box Office ($M)",xlab="Years since 1975")
+abline(lsm1,lty=2)
+plot(YearsS1975,StanRes1,ylab="Standardized Residuals",xlab="Years since 1975")
+acf(StanRes1,main="Series Standardized Residuals")
+#R output on page 327
+library(nlme)
+m1 <- gls(GrossBoxOffice~YearsS1975,correlation=corAR1(form=~YearsS1975),data=boxoffice,method="ML")
+summary(m1)
+intervals(m1)
+```
+
+
+
+
+
+```{r}
+#R output on page 327
+g <- lm(GrossBoxOffice~YearsS1975,data=boxoffice)
+rho <- 0.8782065
+x <- model.matrix(g)
+Sigma <- diag(length(YearsS1975))
+Sigma <- rho^abs(row(Sigma)-col(Sigma))
+sm <- chol(Sigma)
+smi <- solve(t(sm))
+xstar <- smi %*% x
+ystar <- smi %*% GrossBoxOffice
+m1tls <- lm(ystar ~ xstar-1) 
+summary(m1tls)
+```
+
+
+
+
+
+
+```{r}
+
+#Figure 9.17 on page 328
+StanRes1 <- rstandard(m1tls)
+mres2 <- lm(StanRes1~m1tls$fitted.values+I(m1tls$fitted.values^2)+I(m1tls$fitted.values^3))
+b1 <- mres2$coeff[1]
+b2 <- mres2$coeff[2]
+b3 <- mres2$coeff[3]
+b4 <- mres2$coeff[4]
+mres3 <- lm(StanRes1~m1tls$fitted.values+I(m1tls$fitted.values^2)+I(m1tls$fitted.values^3)+I(m1tls$fitted.values^4)+I(m1tls$fitted.values^5))
+par(mfrow=c(1,2))
+plot(m1tls$fitted.values,StanRes1,ylab="Standardized LS Residuals",xlab="Fitted Values*")
+curve(b1 + b2*x + b3*x^2 + + b4*x^3, add = TRUE,lty=2)
+acf(StanRes1,main="Stand LS Residuals")
+
+detach(boxoffice)
+```
+
+
+
+
+
+```{r,echo=FALSE,results='hide'}
+# Plots of the transformed variables from the model
+par(mfrow=c(2,2))
+plot(xstar[,1],ystar,xlab="Intercept*",ylab="GrossBoxOffice*")
+identify(xstar[,1],ystar,YearsS1975)
+plot(xstar[,2],ystar,xlab="YearsS1975*",ylab="GrossBOxOffice*")
+identify(xstar[,2],ystar,YearsS1975)
+#plots of the Standardized LS residuals from the model
+StanRes1 <- rstandard(m1tls)
+acf(StanRes1,main="Standardized LSResiduals")
+plot(xstar[,2],StanRes1,ylab="Standardized LS Residuals",xlab="YearsS1975*")
+identify(xstar[,2],StanRes1,YearsS1975)
+```
+We can see the above plots for the model selected. THe standardized residuals don't have any pattern in the plot. But, the model also has pattern in the plot of fitted Values* and standardized residuals. This definitely is a deficit in our model.
+
+c) 
+The predicted values for year 2008 is 898.0021 millions of dollars.
+```{r}
+predict(m1,data.frame(YearsS1975=33), interval="prediction")
+```
+
+
+d) We can observe the following outliers from the following analysis.
+
+```{r, echo=FALSE,results='hide'}
+plot(YearsS1975,StanRes1,xlab = "YearsS1975",ylab = "standardized residuals")
+abline(h=2,lty=2)
+abline(h=-2,lty=2)
+StanRes1 <- rstandard(m1tls)
+StanRes1
+residual1 <- m1tls$residuals
+identify(YearsS1975,StanRes1)
+leverage1<-hatvalues(m1tls)
+leverage1
+cutofflev<-4/nrow(boxoffice)
+out1<-leverage1[leverage1>cutofflev]
+out1
+
+```
+
+
+The years 1984,2001 and 2005 are the outliers because their standardized residuals falls outside the range of +2 and -2. 
+Under observation, we can see that year 2001 is an outlier but 2000 is not an outlier. Probably the service tax increment introduced in July raised the ticket sale after its introduction and it lasted until 2001 and slowly became normal. The year 2000 might have had less sale in earlier months but had more sale after July accordingly.
+
+
+## Project milestones [20 points]
+
+1. Interpret the results of your model in a draft results sections with preliminary figures.
+ * What interesting patterns do you observe? Anything surprising?
+ * How do the model results relate to your research question and hypothesis?
+ 
+ 
+ Done with Dhurba Neupane
+ 
+ 
+## References

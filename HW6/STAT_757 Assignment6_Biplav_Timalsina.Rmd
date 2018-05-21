@@ -1,0 +1,214 @@
+---
+title: "Assignment 6"
+author: "Biplav Timalsina"
+date: "April 08, 2018"
+output: "pdf_document"
+---
+  
+  
+  
+  \vspace{40pt}
+
+
+![](F:/unr/shift1.png)![](F:/unr/shift1.png)![](F:/unr/logo1.png)
+
+
+```{r setup, include=FALSE}
+library(knitr)
+library(pander)
+opts_chunk$set(echo = TRUE)
+
+```
+
+
+\vspace{175pt}
+
+
+
+# \hspace{90pt} STAT 757 Applied Regression Analysis
+
+---
+  
+  \vspace{132pt}
+\vspace{10pt}
+\vspace{10pt}
+
+\vspace{10pt}
+\vspace{10pt}
+\vspace{5pt}
+
+
+
+
+
+## Instructions [20 points]
+
+Modify this file to provide responses to the Ch.6 Exercises in @sheather2009. You can find some helpful code here: [http://www.stat.
+tamu.edu/~sheather/book/docs/rcode/Chapter6NewMarch2011.R](http://www.stat.tamu.edu/~sheather/book/docs/rcode/Chapter6NewMarch2011.R). Also address the project milestones indicated below. Please email **both** your .Rmd (or roxygen .R) and one of the following either .HTML, .PDF, or .DOCX using the format SURNAME-FIRSTNAME-Assignment6.Rmd and SURNAME-FIRSTNAME-Assignment6.pdf.
+
+
+
+
+
+
+## Exercise 6.7.5 [60 points] 
+![](F:/unr/c23.png)
+
+
+![](F:/unr/c24.png)
+
+
+
+
+![](F:/unr/c25.png)
+
+Let us first plot the scatterplot of the different variables in our data to have a general idea about our data.
+
+
+```{r}
+PGA<-read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW6/pgatour2006.csv",header = TRUE)
+attach(PGA)
+newPGA<-PGA[,c(3,4,5,6,7,8,9,10,11,12)]
+
+cor(newPGA)
+
+#pairs(newData[,1:5])
+pairs(~PrizeMoney
++DrivingAccuracy 
++GIR
++PuttingAverage
++BirdieConversion
++SandSaves
++Scrambling
++PuttsPerRound
+, data=newPGA,main="Simple Scatterplot Matrix")
+
+```
+
+#### a) Ans:
+Let us plot the histogram for the PrizeMoney data points to observe how it is distributed.
+
+
+```{r}
+hist(PGA$PrizeMoney)
+```
+
+It seems that the PrizeMoney data is left skewed as can be seen above. If we apply log transformation to this dependent variable, can we make it normally distributed? Lets try.
+
+
+```{r}
+hist(log(PGA$PrizeMoney))
+```
+Now, it seems normally distributed. Thus, we should definitely log transform our PrizeMoney (y) variable. 
+
+What about other x variables? The statistician has recommended to not perform any transformation the variables. Lets observe the histogram for all the predictors.
+
+```{r}
+lapply(PGA[4:12],FUN=hist)
+```
+
+We can see from above plots that all of the predictors are normally distributed. Thus, we need not transform the variables.
+
+Hence, I agree with the statistician's recommendation to apply log transform to the response variables only, but not the predictor variables.
+
+
+#### b) Ans:
+Let us now make a full regression model containing all seven potential predictor variables listed above.
+
+```{r}
+mfull<-lm(formula=log(PrizeMoney)~DrivingAccuracy 
++GIR
++PuttingAverage
++BirdieConversion
++SandSaves
++Scrambling
++PuttsPerRound
+)
+summary(mfull)
+```
+
+We can observe the coefficient values from the model above. We see that only GIR and BirdieConversion is significant variables in this case.
+Now, let us plot the standardized residuals for different variables.
+
+```{r}
+
+StanRes1 <- rstandard(mfull)
+par(mfrow=c(3,3))
+plot(DrivingAccuracy,StanRes1, ylab="Standardized Residuals")
+plot(GIR,StanRes1, ylab="Standardized Residuals")
+plot(PuttingAverage,StanRes1, ylab="Standardized Residuals")
+plot(BirdieConversion,StanRes1, ylab="Standardized Residuals")
+plot(SandSaves,StanRes1, ylab="Standardized Residuals")
+plot(Scrambling,StanRes1, ylab="Standardized Residuals")
+plot(PuttsPerRound,StanRes1, ylab="Standardized Residuals")
+```
+We begin by looking at the condition below.
+
+![](F:/unr/c26.png)
+We begin by looking at the condition(6.7) above. We can see from the first scatterplot that the predictors seem to be related to each other linearly at least approximately.
+
+Let us now observe added variable plots now.
+
+```{r}
+library(MASS)
+library(car)
+avPlots(mfull)
+```
+
+We can see from above plots that only two predictors (GIR and BirdieConversion) produce statistical significance and rest of the predictors don't show the same.
+
+Let us now plot marginal plots.
+
+```{r}
+par(mfrow=c(2,2))
+mmp(mfull,DrivingAccuracy)
+mmp(mfull,GIR)
+mmp(mfull,PuttingAverage)
+mmp(mfull,BirdieConversion)
+#par(mfrow=c(2,2))
+mmp(mfull,SandSaves)
+mmp(mfull,Scrambling)
+mmp(mfull,PuttsPerRound)
+mmp(mfull,mfull$fitted.values,xlab="Fitted Values")
+# Added-variable plots
+avPlots(mfull)
+```
+
+
+All the lines are quite close to each other, so it seems the model is a good fit.
+
+#### c) Ans:
+```{r, echo=FALSE,results='hide'}
+leverage<-lm.influence(mfull)$hat
+leverage[leverage>16/nrow(PGA)]
+```
+We can declare all points are leverage points which is greater than 0.0816 (i.e., 2(p+1)/n = 16/196 = 0.0816). Therefore, the cases 40,70,77,91,120,168 and 178 appears to be highly influential in the model(i.e., they are considered to be high leverage points).
+All these points are away from average value of predictors and exercise greater effect on the model. These points should be seperately analysed.
+
+
+#### d) Ans:
+This is one of a valid model which can be improved very much. We haven't removed the insignificant predictors such as PuttingAverage. The model may also encounter type S and type m errors. Further investigation should be done in order to find out the proper relationship between the predictors and response. We also see that F-statistic(33.7) and R-squared(0.55) is also not favorable.  
+
+The term $1|1-{R^2}j$ is called the $j^{th}$ variance inflation factor(VIF). Where ${R^2}_j$ denote the value of $R^2$ obtained from the regression of $x_j$ on the other $x's$.
+
+
+The variance inflation facotors for the valid model are:
+
+```{r,echo=FALSE}
+library(MASS)
+library(car)
+vif(mfull)
+```
+
+A number of these variance inflation factors exceed 5, the cut-off often used, and so the associated regression coefficient are poorly estimated due to multicollinearity.
+
+
+#### e) Ans:
+In case of multiple regression, there might be some interplay between variables which can be seen in the scatterplot matrix. When this happens, the effect of variables is hard to be studied directly and it is difficult to evaluate the distinct effects of predictors on the response variable.
+
+Thus, I would not recommend the approach of removing all predictors with insignificant t values because of the issues associated with the added variable plots, and multicollinearity. Whiel removing variables we might remove predictors which actually are good predictors. To remove any variable, we need to perform intensive analysis. 
+
+ 
+ 
+## Project Milestone
+Submitted with Dhurba Neupane

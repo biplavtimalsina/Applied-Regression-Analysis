@@ -1,0 +1,512 @@
+extractAIC(om4,k=2)
+#Calculate AICc
+extractAIC(om4,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om4,k=log(n))
+#Subset size=5
+npar <- length(om5$coefficients) +1
+#Calculate AIC
+extractAIC(om5,k=2)
+#Calculate AICc
+extractAIC(om5,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om5,k=log(n))
+#Subset size=6
+npar <- length(om6$coefficients) +1
+#Calculate AIC
+extractAIC(om6,k=2)
+#Calculate AICc
+extractAIC(om6,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om6,k=log(n))
+#Subset size=7
+npar <- length(om7$coefficients) +1
+#Calculate AIC
+extractAIC(om7,k=2)
+#Calculate AICc
+extractAIC(om7,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om7,k=log(n))
+om3 <-lm(log(PrizeMoney)~GIR+BirdieConversion+Scrambling)
+summary(om3)
+om5 <- lm(log(PrizeMoney)~GIR+BirdieConversion+Scrambling+SandSaves+PuttsPerRound)
+summary(om5)
+#Stepwise Subsets
+#Output from R: Backward Elimination based on AIC and BIC
+backAIC <- step(om7,direction="backward", data=PGA)
+backBIC <- step(om7,direction="backward", data=PGA, k=log(n))
+#Output from R: Forward Selection based on AIC and BIC
+mint <- lm(log(PrizeMoney)~1,data=PGA)
+forwardAIC <- step(mint,scope=list(lower=~1,
+upper=~DrivingAccuracy+GIR+PuttingAverage+BirdieConversion+SandSaves+Scrambling+PuttsPerRound),
+direction="forward", data=PGA)
+forwardBIC <- step(mint,scope=list(lower=~1,
+upper=~DrivingAccuracy+GIR+PuttingAverage+BirdieConversion+SandSaves+Scrambling+PuttsPerRound),
+direction="forward", data=PGA,k=log(n))
+#detach(PGA)
+pairs(PrizeMoney~GIR+BirdieConversion+SandSaves+Scrambling+PuttsPerRound,data=PGA,cex.labels=1.4,main="Scatterplot matrix")
+om5 <- lm(log(PrizeMoney)~GIR+BirdieConversion+Scrambling+SandSaves+PuttsPerRound)
+# Residual plots against each predictor
+par(mfrow=c(3,3))
+StanRes1 <- rstandard(m1)
+plot(GIR,StanRes1, ylab="Standardized Residuals")
+plot(BirdieConversion,StanRes1, ylab="Standardized Residuals")
+plot(SandSaves,StanRes1, ylab="Standardized Residuals")
+plot(Scrambling,StanRes1, ylab="Standardized Residuals")
+plot(PuttsPerRound,StanRes1, ylab="Standardized Residuals")
+# Diagnostic plots for the regression model
+par(mfrow=c(2,3))
+plot(om5,main="Diagnostic plot om5")
+plot(om5$fitted.values,log(PrizeMoney),ylab ="log(PrizeMoney)",xlab="Fitted Values")
+abline(lsfit(om5$fitted.values,log(PrizeMoney)))
+par(mfrow=c(1,2))
+# Marginal model plots
+par(mfrow=c(3,3))
+mmp(m1,GIR)
+mmp(m1,BirdieConversion)
+mmp(m1,SandSaves)
+mmp(m1,Scrambling)
+mmp(m1,PuttsPerRound)
+mmp(m1,m1$fitted.values,xlab="Fitted Values")
+# Added-variable plots
+avPlots(om5)
+#variation inflation factor
+vif(om5)
+NS<-read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW7/NStudy.csv",header = TRUE)
+newData<-NS[1:100,c(3,4,5,6,7,8,9,10)]
+attach(newData)
+#Creating all possible subsets
+X <- cbind(NRate,Cultivar,Block,Year)
+library(leaps)
+b <- regsubsets(as.matrix(X),Seedyield)
+rs <- summary(b)
+rs
+par(mfrow=c(1,1))
+library(car)
+subsets(b,statistic=c("adjr2"),legend=FALSE)
+#Table values of ${R^2}adj$ , AIC, $AIC_C$, BIC
+#Calculate adjusted R-squared
+rs$adjr2
+om1 <- lm(Seedyield~Block)
+#summary(om1)
+om2 <- lm(Seedyield~Block+ Cultivar)
+#summary(om2)
+om3 <-lm(Seedyield~Block + Cultivar + Year)
+#summary(om3)
+om4 <- lm(Seedyield~Block+ Cultivar + Year + NRate)
+#summary(om4)
+#Calculate AIC, BIC, AICc
+#Subset size=1
+n <- length(om1$residuals)
+npar <- length(om1$coefficients) +1
+#Calculate AIC
+extractAIC(om1,k=2)
+#Calculate AICc
+extractAIC(om1,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om1,k=log(n))
+#Subset size=2
+npar <- length(om2$coefficients) +1
+#Calculate AIC
+extractAIC(om2,k=2)
+#Calculate AICc
+extractAIC(om2,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om2,k=log(n))
+#Subset size=3
+npar <- length(om3$coefficients) +1
+#Calculate AIC
+extractAIC(om3,k=2)
+#Calculate AICc
+extractAIC(om3,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om3,k=log(n))
+#Subset size=4
+npar <- length(om4$coefficients) +1
+#Calculate AIC
+extractAIC(om4,k=2)
+#Calculate AICc
+extractAIC(om4,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om4,k=log(n))
+testData<-NS[101:1028,c(3,4,5,6,7)]
+attach(testData)
+pred<-pred(om4, testData )
+testData<-NS[101:1028,c(3,4,5,6,7)]
+attach(testData)
+pred<-predict(om4, testData )
+testData<-NS[101:1028,c(3,4,5,6,7)]
+attach(testData)
+pred<-predict.lm(om4, testData )
+pred
+NS<-read.csv("F:/unr/4th sem/applied regression analysis/Assignments/HW7/NStudy.csv",header = TRUE)
+newData<-NS[1:100,c(3,4,5,6,7,8,9,10)]
+attach(newData)
+#Creating all possible subsets
+X <- cbind(NRate,Cultivar,Block,Year,NSource)
+library(leaps)
+b <- regsubsets(as.matrix(X),Seedyield)
+rs <- summary(b)
+rs
+par(mfrow=c(1,1))
+library(car)
+subsets(b,statistic=c("adjr2"),legend=FALSE)
+#Table values of ${R^2}adj$ , AIC, $AIC_C$, BIC
+#Calculate adjusted R-squared
+rs$adjr2
+om1 <- lm(Seedyield~Block)
+#summary(om1)
+om2 <- lm(Seedyield~Block+ Cultivar)
+#summary(om2)
+om3 <-lm(Seedyield~Block + Cultivar + Year)
+#summary(om3)
+om4 <- lm(Seedyield~Block+ Cultivar + Year + NRate)
+#summary(om4)
+om5 <- lm(Seedyield~Block+ Cultivar + Year + NRate+NSource)
+#summary(om5)
+#Calculate AIC, BIC, AICc
+#Subset size=1
+n <- length(om1$residuals)
+npar <- length(om1$coefficients) +1
+#Calculate AIC
+extractAIC(om1,k=2)
+#Calculate AICc
+extractAIC(om1,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om1,k=log(n))
+#Subset size=2
+npar <- length(om2$coefficients) +1
+#Calculate AIC
+extractAIC(om2,k=2)
+#Calculate AICc
+extractAIC(om2,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om2,k=log(n))
+#Subset size=3
+npar <- length(om3$coefficients) +1
+#Calculate AIC
+extractAIC(om3,k=2)
+#Calculate AICc
+extractAIC(om3,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om3,k=log(n))
+#Subset size=4
+npar <- length(om4$coefficients) +1
+#Calculate AIC
+extractAIC(om4,k=2)
+#Calculate AICc
+extractAIC(om4,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om4,k=log(n))
+#Subset size=5
+npar <- length(om5$coefficients) +1
+#Calculate AIC
+extractAIC(om5,k=2)
+#Calculate AICc
+extractAIC(om5,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om5,k=log(n))
+#Table values of ${R^2}adj$ , AIC, $AIC_C$, BIC
+#Calculate adjusted R-squared
+rs$adjr2
+om1 <- lm(Seedyield~Block)
+#summary(om1)
+om2 <- lm(Seedyield~Block+ Cultivar)
+#summary(om2)
+om3 <-lm(Seedyield~Block + Cultivar + Year)
+#summary(om3)
+om4 <- lm(Seedyield~Block+ Cultivar + Year + NRate)
+#summary(om4)
+om5 <- lm(Seedyield~Block+ Cultivar + Year + NRate+NSource)
+#summary(om5)
+#Calculate AIC, BIC, AICc
+#Subset size=1
+n <- length(om1$residuals)
+npar <- length(om1$coefficients) +1
+#Calculate AIC
+extractAIC(om1,k=2)
+#Calculate AICc
+extractAIC(om1,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om1,k=log(n))
+#Subset size=2
+npar <- length(om2$coefficients) +1
+#Calculate AIC
+extractAIC(om2,k=2)
+#Calculate AICc
+extractAIC(om2,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om2,k=log(n))
+#Subset size=3
+npar <- length(om3$coefficients) +1
+#Calculate AIC
+extractAIC(om3,k=2)
+#Calculate AICc
+extractAIC(om3,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om3,k=log(n))
+#Subset size=4
+npar <- length(om4$coefficients) +1
+#Calculate AIC
+extractAIC(om4,k=2)
+#Calculate AICc
+extractAIC(om4,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om4,k=log(n))
+#Subset size=5
+npar <- length(om5$coefficients) +1
+#Calculate AIC
+extractAIC(om5,k=2)
+#Calculate AICc
+extractAIC(om5,k=2)+2*npar*(npar+1)/(n-npar-1)
+#Calculate BIC
+extractAIC(om5,k=log(n))
+testData<-NS[101:1028,c(3,4,5,6,7)]
+attach(testData)
+pred<-predict.lm(om4, testData )
+pred
+testData<-NS[101:1028,c(3,4,5,6,7)]
+attach(testData)
+pred<-predict.lm(om4, testData )
+detach(testData)
+testData<-NS[101:128,c(3,4,5,6,7)]
+attach(testData)
+pred<-predict.lm(om4, testData)
+detach(testData)
+pred
+testData<-NS[101:128,c(3,4,5,6,7)]
+attach(testData)
+pred<-predict.lm(om4, testData)
+actualY<-NS[101:128,8]
+rmse<-mean((pred-actualY)**2)
+detach(testData)
+rmse
+testData<-NS[101:128,c(3,4,5,6,7)]
+attach(testData)
+pred<-predict.lm(om4, testData)
+actualY<-NS[101:128,8]
+rmse<-mean((pred-actualY)**2)/28
+detach(testData)
+rmse
+testData<-NS[101:128,c(3,4,5,6,7)]
+attach(testData)
+pred<-predict.lm(om4, testData)
+actualY<-NS[101:128,8]
+rmse<-sqrt(mean((pred-actualY)**2)/28)
+rmse
+detach(testData)
+om4 <- lm(Seedyield~Block+ Cultivar + Year + NRate)
+newData<-NS[,c(3,4,5,6,7,8,9,10)]
+attach(newData)
+om4 <- lm(Seedyield~Block+ Cultivar + Year + NRate)
+summary(om4)
+# Residual plots against each predictor
+par(mfrow=c(3,3))
+StanRes1 <- rstandard(om4)
+plot(NRate,StanRes1, ylab="Standardized Residuals")
+plot(Year,StanRes1, ylab="Standardized Residuals")
+plot(Cultivar,StanRes1, ylab="Standardized Residuals")
+plot(Block,StanRes1, ylab="Standardized Residuals")
+# Diagnostic plots for the regression model
+par(mfrow=c(2,3))
+plot(om4,main="Diagnostic plot om5")
+plot(om4$fitted.values,log(Seedyield),ylab ="SeedYield",xlab="Fitted Values")
+abline(lsfit(om4$fitted.values,SeedYield))
+# Residual plots against each predictor
+par(mfrow=c(3,3))
+StanRes1 <- rstandard(om4)
+plot(NRate,StanRes1, ylab="Standardized Residuals")
+plot(Year,StanRes1, ylab="Standardized Residuals")
+plot(Cultivar,StanRes1, ylab="Standardized Residuals")
+plot(Block,StanRes1, ylab="Standardized Residuals")
+# Diagnostic plots for the regression model
+par(mfrow=c(2,3))
+plot(om4,main="Diagnostic plot om5")
+plot(om4$fitted.values,log(Seedyield),ylab ="SeedYield",xlab="Fitted Values")
+abline(lsfit(om4$fitted.values,Seedyield))
+par(mfrow=c(1,2))
+# Marginal model plots
+par(mfrow=c(3,3))
+mmp(om4,Year)
+mmp(om4,Block)
+mmp(om4,Cultivar)
+# Residual plots against each predictor
+par(mfrow=c(3,3))
+StanRes1 <- rstandard(om4)
+plot(NRate,StanRes1, ylab="Standardized Residuals")
+plot(Year,StanRes1, ylab="Standardized Residuals")
+plot(Cultivar,StanRes1, ylab="Standardized Residuals")
+plot(Block,StanRes1, ylab="Standardized Residuals")
+# Diagnostic plots for the regression model
+par(mfrow=c(2,3))
+plot(om4,main="Diagnostic plot om5")
+plot(om4$fitted.values,log(Seedyield),ylab ="SeedYield",xlab="Fitted Values")
+abline(lsfit(om4$fitted.values,Seedyield))
+par(mfrow=c(1,2))
+# Marginal model plots
+par(mfrow=c(3,3))
+mmp(om4,Year)
+mmp(om4,Block)
+mmp(om4,Cultivar)
+# Residual plots against each predictor
+par(mfrow=c(3,3))
+StanRes1 <- rstandard(om4)
+plot(NRate,StanRes1, ylab="Standardized Residuals")
+plot(Year,StanRes1, ylab="Standardized Residuals")
+plot(Cultivar,StanRes1, ylab="Standardized Residuals")
+plot(Block,StanRes1, ylab="Standardized Residuals")
+# Diagnostic plots for the regression model
+par(mfrow=c(2,3))
+plot(om4,main="Diagnostic plot om5")
+plot(om4$fitted.values,log(Seedyield),ylab ="SeedYield",xlab="Fitted Values")
+abline(lsfit(om4$fitted.values,Seedyield))
+par(mfrow=c(1,2))
+# Marginal model plots
+par(mfrow=c(3,3))
+mmp(om4,Year)
+mmp(om4,Block)
+#mmp(om4,Cultivar)
+#mmp(om4,NRate)
+#mmp(om4,NSource)
+# Added-variable plots
+avPlots(om5)
+# Residual plots against each predictor
+par(mfrow=c(3,3))
+StanRes1 <- rstandard(om4)
+plot(NRate,StanRes1, ylab="Standardized Residuals")
+plot(Year,StanRes1, ylab="Standardized Residuals")
+plot(Cultivar,StanRes1, ylab="Standardized Residuals")
+plot(Block,StanRes1, ylab="Standardized Residuals")
+plot(NSource,StanRes1, ylab="Standardized Residuals")
+# Diagnostic plots for the regression model
+par(mfrow=c(2,3))
+plot(om4,main="Diagnostic plot om5")
+plot(om4$fitted.values,log(Seedyield),ylab ="SeedYield",xlab="Fitted Values")
+abline(lsfit(om4$fitted.values,Seedyield))
+par(mfrow=c(1,2))
+# Marginal model plots
+par(mfrow=c(3,3))
+mmp(om4,Year)
+mmp(om4,Block)
+mmp(om4,Cultivar)
+# Residual plots against each predictor
+par(mfrow=c(3,3))
+StanRes1 <- rstandard(om4)
+plot(NRate,StanRes1, ylab="Standardized Residuals")
+plot(Year,StanRes1, ylab="Standardized Residuals")
+plot(Cultivar,StanRes1, ylab="Standardized Residuals")
+plot(Block,StanRes1, ylab="Standardized Residuals")
+plot(NSource,StanRes1, ylab="Standardized Residuals")
+# Diagnostic plots for the regression model
+par(mfrow=c(2,3))
+plot(om4,main="Diagnostic plot om5")
+plot(om4$fitted.values,log(Seedyield),ylab ="SeedYield",xlab="Fitted Values")
+abline(lsfit(om4$fitted.values,Seedyield))
+par(mfrow=c(1,2))
+# Marginal model plots
+par(mfrow=c(3,3))
+mmp(om4,Year)
+mmp(om4,Block)
+#mmp(om4,Cultivar)
+mmp(om4,NRate)
+# Residual plots against each predictor
+par(mfrow=c(3,3))
+StanRes1 <- rstandard(om4)
+plot(NRate,StanRes1, ylab="Standardized Residuals")
+plot(Year,StanRes1, ylab="Standardized Residuals")
+plot(Cultivar,StanRes1, ylab="Standardized Residuals")
+plot(Block,StanRes1, ylab="Standardized Residuals")
+plot(NSource,StanRes1, ylab="Standardized Residuals")
+# Diagnostic plots for the regression model
+par(mfrow=c(2,3))
+plot(om4,main="Diagnostic plot om5")
+plot(om4$fitted.values,log(Seedyield),ylab ="SeedYield",xlab="Fitted Values")
+abline(lsfit(om4$fitted.values,Seedyield))
+par(mfrow=c(1,2))
+# Marginal model plots
+par(mfrow=c(3,3))
+mmp(om4,Year)
+mmp(om4,Block)
+#mmp(om4,Cultivar)
+#mmp(om4,NRate)
+mmp(om4,NSource)
+# Added-variable plots
+avPlots(om5)
+# Residual plots against each predictor
+par(mfrow=c(3,3))
+StanRes1 <- rstandard(om4)
+plot(NRate,StanRes1, ylab="Standardized Residuals")
+plot(Year,StanRes1, ylab="Standardized Residuals")
+plot(Cultivar,StanRes1, ylab="Standardized Residuals")
+plot(Block,StanRes1, ylab="Standardized Residuals")
+plot(NSource,StanRes1, ylab="Standardized Residuals")
+# Diagnostic plots for the regression model
+par(mfrow=c(2,3))
+plot(om4,main="Diagnostic plot om5")
+plot(om4$fitted.values,log(Seedyield),ylab ="SeedYield",xlab="Fitted Values")
+abline(lsfit(om4$fitted.values,Seedyield))
+par(mfrow=c(1,2))
+# Marginal model plots
+par(mfrow=c(3,3))
+mmp(om4,Year)
+mmp(om4,Block)
+#mmp(om4,Cultivar)
+#mmp(om4,NRate)
+#mmp(om4,NSource)
+# Added-variable plots
+avPlots(om5)
+# Residual plots against each predictor
+par(mfrow=c(3,3))
+StanRes1 <- rstandard(om4)
+plot(NRate,StanRes1, ylab="Standardized Residuals")
+plot(Year,StanRes1, ylab="Standardized Residuals")
+plot(Cultivar,StanRes1, ylab="Standardized Residuals")
+plot(Block,StanRes1, ylab="Standardized Residuals")
+//plot(NSource,StanRes1, ylab="Standardized Residuals")
+# Residual plots against each predictor
+par(mfrow=c(3,3))
+StanRes1 <- rstandard(om4)
+plot(NRate,StanRes1, ylab="Standardized Residuals")
+plot(Year,StanRes1, ylab="Standardized Residuals")
+plot(Cultivar,StanRes1, ylab="Standardized Residuals")
+plot(Block,StanRes1, ylab="Standardized Residuals")
+#plot(NSource,StanRes1, ylab="Standardized Residuals")
+# Diagnostic plots for the regression model
+par(mfrow=c(2,3))
+plot(om4,main="Diagnostic plot om5")
+plot(om4$fitted.values,log(Seedyield),ylab ="SeedYield",xlab="Fitted Values")
+abline(lsfit(om4$fitted.values,Seedyield))
+par(mfrow=c(1,2))
+# Marginal model plots
+par(mfrow=c(3,3))
+mmp(om4,Year)
+mmp(om4,Block)
+#mmp(om4,Cultivar)
+#mmp(om4,NRate)
+#mmp(om4,NSource)
+# Added-variable plots
+avPlots(om5)
+# Residual plots against each predictor
+newFullData<-NS[,c(3,4,5,6,7,8,9,10)]
+par(mfrow=c(3,3))
+StanRes1 <- rstandard(om4)
+plot(NRate,StanRes1, ylab="Standardized Residuals")
+plot(Year,StanRes1, ylab="Standardized Residuals")
+plot(Cultivar,StanRes1, ylab="Standardized Residuals")
+plot(Block,StanRes1, ylab="Standardized Residuals")
+#plot(NSource,StanRes1, ylab="Standardized Residuals")
+# Diagnostic plots for the regression model
+par(mfrow=c(2,3))
+plot(om4,main="Diagnostic plot om5")
+plot(om4$fitted.values,log(Seedyield),ylab ="SeedYield",xlab="Fitted Values")
+abline(lsfit(om4$fitted.values,Seedyield))
+par(mfrow=c(1,2))
+# Marginal model plots
+par(mfrow=c(3,3))
+mmp(om4,Year)
+mmp(om4,Block)
+#mmp(om4,Cultivar)
+#mmp(om4,NRate)
+#mmp(om4,NSource)
+# Added-variable plots
+avPlots(om5)

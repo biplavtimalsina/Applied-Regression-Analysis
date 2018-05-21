@@ -1,0 +1,182 @@
+library(knitr)
+library(pander)
+opts_chunk$set(echo = TRUE)
+my_data<-read.table('F:/unr/4th sem/applied regression analysis/Assignments/HW9/boxoffice.txt', header=TRUE)
+plot(my_data$GrossBoxOffice, my_data$year)
+my_data<-read.table('F:/unr/4th sem/applied regression analysis/Assignments/HW9/boxoffice.txt', header=TRUE)
+plot(my_data$year,my_data$GrossBoxOffice)
+my_data<-'C:/Users/dhurbaneupane/OneDrive/Spring 2018/RegSTAT757/Stat 757HW/HW9_STAT575'
+boxoffice <- read.table("C:/Users/dhurbaneupane/OneDrive/Spring 2018/RegSTAT757/Stat 757HW/HW9_STAT575/boxoffice.txt", header=TRUE)
+predict(m1,data.frame(YearsS1975=33), interval="prediction")
+boxoffice <- read.table("C:/Users/dhurbaneupane/OneDrive/Spring 2018/RegSTAT757/Stat 757HW/HW9_STAT575/boxoffice.txt", header=TRUE)
+my_data<-read.table('F:/unr/4th sem/applied regression analysis/Assignments/HW9/boxoffice.txt', header=TRUE)
+attach(boxoffice)
+my_data<-read.table('F:/unr/4th sem/applied regression analysis/Assignments/HW9/boxoffice.txt', header=TRUE)
+#Figure 9.16 on page 326
+YearsS1975 <- year - 1975
+my_data<-read.table('F:/unr/4th sem/applied regression analysis/Assignments/HW9/boxoffice.txt', header=TRUE)
+#Figure 9.16 on page 326
+YearsS1975 <- year-1975
+my_data<-read.table('F:/unr/4th sem/applied regression analysis/Assignments/HW9/boxoffice.txt', header=TRUE)
+#Figure 9.16 on page 326
+YearsS1975 <- year-1975
+boxoffice <- read.table('F:/unr/4th sem/applied regression analysis/Assignments/HW9/boxoffice.txt', header=TRUE)
+attach(boxoffice)
+#Figure 9.16 on page 326
+YearsS1975 <- year - 1975
+lsm1 <- lm(GrossBoxOffice~YearsS1975,data=boxoffice)
+StanRes1 <- rstandard(lsm1)
+par(mfrow=c(2,2))
+plot(YearsS1975,GrossBoxOffice,ylab="Gross Box Office ($M)",xlab="Years since 1975")
+abline(lsm1,lty=2)
+plot(YearsS1975,StanRes1,ylab="Standardized Residuals",xlab="Years since 1975")
+acf(StanRes1,main="Series Standardized Residuals")
+#R output on page 327
+library(nlme)
+m1 <- gls(GrossBoxOffice~YearsS1975,correlation=corAR1(form=~YearsS1975),data=boxoffice,method="ML")
+summary(m1)
+intervals(m1)
+#R output on page 327
+g <- lm(GrossBoxOffice~YearsS1975,data=boxoffice)
+rho <- 0.8782065
+x <- model.matrix(g)
+Sigma <- diag(length(YearsS1975))
+Sigma <- rho^abs(row(Sigma)-col(Sigma))
+sm <- chol(Sigma)
+smi <- solve(t(sm))
+xstar <- smi %*% x
+ystar <- smi %*% GrossBoxOffice
+m1tls <- lm(ystar ~ xstar-1)
+summary(m1tls)
+#Figure 9.17 on page 328
+StanRes1 <- rstandard(m1tls)
+mres2 <- lm(StanRes1~m1tls$fitted.values+I(m1tls$fitted.values^2)+I(m1tls$fitted.values^3))
+b1 <- mres2$coeff[1]
+b2 <- mres2$coeff[2]
+b3 <- mres2$coeff[3]
+b4 <- mres2$coeff[4]
+mres3 <- lm(StanRes1~m1tls$fitted.values+I(m1tls$fitted.values^2)+I(m1tls$fitted.values^3)+I(m1tls$fitted.values^4)+I(m1tls$fitted.values^5))
+par(mfrow=c(1,2))
+plot(m1tls$fitted.values,StanRes1,ylab="Standardized LS Residuals",xlab="Fitted Values*")
+curve(b1 + b2*x + b3*x^2 + + b4*x^3, add = TRUE,lty=2)
+acf(StanRes1,main="Stand LS Residuals")
+# # Plots of the transformed variables from the model
+# par(mfrow=c(2,2))
+# plot(xstar[,1],ystar,xlab="Intercept*",ylab="GrossBoxOffice*")
+# identify(xstar[,1],ystar,YearsS1975)
+# plot(xstar[,2],ystar,xlab="YearsS1975*",ylab="GrossBOxOffice*")
+# identify(xstar[,2],ystar,YearsS1975)
+#
+# #plots of the Standardized LS residuals from the model
+# StanRes1 <- rstandard(m1tls)
+# par(mfrow=c(2,2))
+# acf(StanRes1,main="Standardized LSResiduals")
+# plot(xstar[,2],StanRes1,ylab="Standardized LS Residuals",xlab="YearsS1975*")
+# identify(xstar[,2],StanRes1,YearsS1975)
+detach(boxoffice)
+# Plots of the transformed variables from the model
+par(mfrow=c(2,2))
+plot(xstar[,1],ystar,xlab="Intercept*",ylab="GrossBoxOffice*")
+identify(xstar[,1],ystar,YearsS1975)
+plot(xstar[,2],ystar,xlab="YearsS1975*",ylab="GrossBOxOffice*")
+identify(xstar[,2],ystar,YearsS1975)
+#plots of the Standardized LS residuals from the model
+StanRes1 <- rstandard(m1tls)
+acf(StanRes1,main="Standardized LSResiduals")
+plot(xstar[,2],StanRes1,ylab="Standardized LS Residuals",xlab="YearsS1975*")
+identify(xstar[,2],StanRes1,YearsS1975)
+identify(xstar[,2],StanRes1,YearsS1975)
+# identify(xstar[,1],ystar,YearsS1975)
+# plot(xstar[,2],ystar,xlab="YearsS1975*",ylab="GrossBOxOffice*")
+# identify(xstar[,2],ystar,YearsS1975)
+#
+# #plots of the Standardized LS residuals from the model
+# StanRes1 <- rstandard(m1tls)
+# par(mfrow=c(2,2))
+# acf(StanRes1,main="Standardized LSResiduals")
+# plot(xstar[,2],StanRes1,ylab="Standardized LS Residuals",xlab="YearsS1975*")
+# identify(xstar[,2],StanRes1,YearsS1975)
+detach(boxoffice)
+boxoffice <- read.table('F:/unr/4th sem/applied regression analysis/Assignments/HW9/boxoffice.txt', header=TRUE)
+attach(boxoffice)
+#Figure 9.16 on page 326
+YearsS1975 <- year - 1975
+lsm1 <- lm(GrossBoxOffice~YearsS1975,data=boxoffice)
+StanRes1 <- rstandard(lsm1)
+par(mfrow=c(2,2))
+plot(YearsS1975,GrossBoxOffice,ylab="Gross Box Office ($M)",xlab="Years since 1975")
+abline(lsm1,lty=2)
+plot(YearsS1975,StanRes1,ylab="Standardized Residuals",xlab="Years since 1975")
+acf(StanRes1,main="Series Standardized Residuals")
+#R output on page 327
+library(nlme)
+m1 <- gls(GrossBoxOffice~YearsS1975,correlation=corAR1(form=~YearsS1975),data=boxoffice,method="ML")
+summary(m1)
+intervals(m1)
+#R output on page 327
+g <- lm(GrossBoxOffice~YearsS1975,data=boxoffice)
+rho <- 0.8782065
+x <- model.matrix(g)
+Sigma <- diag(length(YearsS1975))
+Sigma <- rho^abs(row(Sigma)-col(Sigma))
+sm <- chol(Sigma)
+smi <- solve(t(sm))
+xstar <- smi %*% x
+ystar <- smi %*% GrossBoxOffice
+m1tls <- lm(ystar ~ xstar-1)
+summary(m1tls)
+#Figure 9.17 on page 328
+StanRes1 <- rstandard(m1tls)
+mres2 <- lm(StanRes1~m1tls$fitted.values+I(m1tls$fitted.values^2)+I(m1tls$fitted.values^3))
+b1 <- mres2$coeff[1]
+b2 <- mres2$coeff[2]
+b3 <- mres2$coeff[3]
+b4 <- mres2$coeff[4]
+mres3 <- lm(StanRes1~m1tls$fitted.values+I(m1tls$fitted.values^2)+I(m1tls$fitted.values^3)+I(m1tls$fitted.values^4)+I(m1tls$fitted.values^5))
+par(mfrow=c(1,2))
+plot(m1tls$fitted.values,StanRes1,ylab="Standardized LS Residuals",xlab="Fitted Values*")
+curve(b1 + b2*x + b3*x^2 + + b4*x^3, add = TRUE,lty=2)
+acf(StanRes1,main="Stand LS Residuals")
+# # Plots of the transformed variables from the model
+# par(mfrow=c(2,2))
+# plot(xstar[,1],ystar,xlab="Intercept*",ylab="GrossBoxOffice*")
+# identify(xstar[,1],ystar,YearsS1975)
+# plot(xstar[,2],ystar,xlab="YearsS1975*",ylab="GrossBOxOffice*")
+# identify(xstar[,2],ystar,YearsS1975)
+#
+# #plots of the Standardized LS residuals from the model
+# StanRes1 <- rstandard(m1tls)
+# par(mfrow=c(2,2))
+# acf(StanRes1,main="Standardized LSResiduals")
+# plot(xstar[,2],StanRes1,ylab="Standardized LS Residuals",xlab="YearsS1975*")
+# identify(xstar[,2],StanRes1,YearsS1975)
+detach(boxoffice)
+# Plots of the transformed variables from the model
+par(mfrow=c(2,2))
+plot(xstar[,1],ystar,xlab="Intercept*",ylab="GrossBoxOffice*")
+identify(xstar[,1],ystar,YearsS1975)
+plot(xstar[,2],ystar,xlab="YearsS1975*",ylab="GrossBOxOffice*")
+identify(xstar[,2],ystar,YearsS1975)
+#plots of the Standardized LS residuals from the model
+StanRes1 <- rstandard(m1tls)
+acf(StanRes1,main="Standardized LSResiduals")
+plot(xstar[,2],StanRes1,ylab="Standardized LS Residuals",xlab="YearsS1975*")
+identify(xstar[,2],StanRes1,YearsS1975)
+predict(m1,data.frame(YearsS1975=33), interval="prediction")
+predict(m1,data.frame(YearsS1975=33), interval="prediction")
+plot(YearsS1975,StanRes1,xlab = "YearsS1975",ylab = "standardized residuals")
+abline(h=2,lty=2)
+abline(h=-2,lty=2)
+StanRes1 <- rstandard(m1tls)
+StanRes1
+residual1 <- m1tls$residuals
+identify(YearsS1975,StanRes1)
+leverage1<-hatvalues(m1tls)
+leverage1
+cutofflev<-4/nrow(boxoffice)
+out1<-leverage1[leverage1>cutofflev]
+out1
+StanRes1
+leverage1
+StanRes1
+leverage1
